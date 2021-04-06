@@ -10,12 +10,12 @@ A  NodeCG bundle to control an instance of OBS.
 ## About
 *This is a bundle for [NodeCG](https://github.com/nodecg/nodecg); if you do not understand what that is, we advise you read their website first for more information.*
 
-obs-control is a bundle for NodeCG to enable control of an OBS instance. Gone are the days where you need to use Teamviewer to let other staff/volenteers ontrol your stream.
+obs-control is a bundle for NodeCG to enable control of an OBS instance. Gone are the days where you need to use Teamviewer to let other staff/volunteers control your stream.
 
 ### Features
-- Full compatibility with OBS Websocket: perview/program, scene selection, audio mixer, stats, etc...
+- Full compatibility with OBS Websocket: preview/program, scene selection, audio mixer, stats, etc...
 - Auto-Record: Record whenever you're not in an intermission
-- Conpatible with [NodeCG Speedcontrol](https://github.com/speedcontrol/nodecg-speedcontrol), auto-change runner input and layout based on current run
+- Compatible with [NodeCG Speedcontrol](https://github.com/speedcontrol/nodecg-speedcontrol), auto-change runner input and layout based on current run
 
 ## Requirements
 - [NodeCG](https://github.com/nodecg/nodecg)
@@ -31,19 +31,19 @@ To install, navigate to your root NodeCG directory and run the following command
 After the installation completes, create a config file by running `nodecg defaultconfig obs-control`. A walkthrough of the config file can be found on the [wiki]().
 
 ## Usage
-Once the bundle is configured properly, usage is pretty simple. On first load, the bundle will load all scenes and audio sources. Simply press the appropiate buttons to control OBS.
+Once the bundle is configured properly, usage is pretty simple. On first load, the bundle will load all scenes and audio sources. Simply press the appropriate buttons to control OBS.
 
 A dashboard and sample user guide can be found on the [wiki](https://github.com/nicnacnic/obs-control/wiki).
 
 ## Commission Work
-Commission work is availibe! If you don't have any coding experience, or simply don't have time to develop, I can help bring your project or event to life. More information can be found by visiting my website at [https://www.nicnacnic.com/commission-work](https://www.nicnacnic.com/commission-work) or contacting me through Discord.
+Commission work is available! If you don't have any coding experience, or simply don't have time to develop, I can help bring your project or event to life. More information can be found by visiting my website at [https://www.nicnacnic.com/commission-work](https://www.nicnacnic.com/commission-work) or contacting me through Discord.
 
 ## Other Bundles
 - [speedcontrol-layouts](https://github.com/nicnacnic/speedcontrol-layouts) A pack of simple yet easily customizable layouts, works very well with this bundle!
 - [tweetr]() (in development) Send and schedule tweets right from the dashboard!
 
 ## Contributing
-There is a lot of ineffecient code in this bundle. If you can optimize the code, or add new features, submit a pull request! Before you do, please make sure to **test your code**.
+There is a lot of inefficient code in this bundle. If you can optimize the code, or add new features, submit a pull request! Before you do, please make sure to **test your code**.
 
 Bugs or glitches should first be checked against the list of [known bugs](https://github.com/nicnacnic/obs-control/wiki), then by creating an issue in the [issue tracker](https://github.com/nicnacnic/obs-control/issues). Suggestions are always welcome!
 
