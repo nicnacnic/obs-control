@@ -1,5 +1,5 @@
 # obs-control
-A  NodeCG bundle to control an instance of OBS.
+A  NodeCG bundle to control an instance of OBS. 
 
 [![Release](https://img.shields.io/github/v/release/nicnacnic/obs-control?label=Release)](https://github.com/nicnacnic/speedcontrol-layouts/releases)
 ![Downloads](https://img.shields.io/github/downloads/nicnacnic/obs-control/total?label=Downloads)
