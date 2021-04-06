@@ -1,0 +1,16 @@
+#main {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	display: inline-block;
+}
+.buttonDiv {
+	width: 100%;
+	height: 50px;
+}
+.inputDiv {
+	width: 100%;
+	height: 80px;
+	text-align: left;
+	display: inline-block;
+}

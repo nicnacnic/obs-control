@@ -1,0 +1,171 @@
+{
+	"definitions": {},
+	"$schema": "http://json-schema.org/draft-07/schema#", 
+	"$id": "https://example.com/object1617713959.json", 
+	"title": "Root", 
+	"type": "object",
+	"required": [
+		"autoRecord",
+		"useRTMP",
+		"RTMPServerURL",
+		"settingsPassword",
+		"speedcontrol",
+		"obsWebsocket",
+		"twitchSource",
+		"RTMPSource"
+	],
+	"properties": {
+		"autoRecord": {
+			"$id": "#root/autoRecord", 
+			"title": "Autorecord", 
+			"type": "boolean",
+			"examples": [
+				false
+			],
+			"default": false
+		},
+		"useRTMP": {
+			"$id": "#root/useRTMP", 
+			"title": "Usertmp", 
+			"type": "boolean",
+			"examples": [
+				false
+			],
+			"default": false
+		},
+		"RTMPServerURL": {
+			"$id": "#root/RTMPServerURL", 
+			"title": "Rtmpserverurl", 
+			"type": "string",
+			"default": "rtmp://rtmp.example.com/live",
+			"examples": [
+				"rtmp://rtmp.example.com/live"
+			],
+			"pattern": "^.*$"
+		},
+		"settingsPassword": {
+			"$id": "#root/settingsPassword", 
+			"title": "Settingspassword", 
+			"type": "string",
+			"default": "password",
+			"examples": [
+				"password"
+			],
+			"pattern": "^.*$"
+		},
+		"speedcontrol": {
+			"$id": "#root/speedcontrol", 
+			"title": "Speedcontrol", 
+			"type": "object",
+			"required": [
+				"useSpeedcontrolData",
+				"setRunnerStream",
+				"setLayout"
+			],
+			"properties": {
+				"useSpeedcontrolData": {
+					"$id": "#root/speedcontrol/useSpeedcontrolData", 
+					"title": "Usespeedcontroldata", 
+					"type": "boolean",
+					"examples": [
+						true
+					],
+					"default": false
+				},
+				"setRunnerStream": {
+					"$id": "#root/speedcontrol/setRunnerStream", 
+					"title": "Setrunnerstream", 
+					"type": "boolean",
+					"examples": [
+						true
+					],
+					"default": false
+				},
+				"setLayout": {
+					"$id": "#root/speedcontrol/setLayout", 
+					"title": "Setlayout", 
+					"type": "boolean",
+					"examples": [
+						true
+					],
+					"default": false
+				}
+			}
+		}
+,
+		"obsWebsocket": {
+			"$id": "#root/obsWebsocket", 
+			"title": "Obswebsocket", 
+			"type": "object",
+			"required": [
+				"address",
+				"password",
+				"previewRefresh"
+			],
+			"properties": {
+				"address": {
+					"$id": "#root/obsWebsocket/address", 
+					"title": "Address", 
+					"type": "string",
+					"default": "localhost:4444",
+					"examples": [
+						"localhost:4444"
+					],
+					"pattern": "^.*$"
+				},
+				"password": {
+					"$id": "#root/obsWebsocket/password", 
+					"title": "Password", 
+					"type": "string",
+					"default": "password",
+					"examples": [
+						"password"
+					],
+					"pattern": "^.*$"
+				},
+				"previewRefresh": {
+					"$id": "#root/obsWebsocket/previewRefresh", 
+					"title": "Previewrefresh", 
+					"type": "integer",
+					"examples": [
+						1000
+					],
+					"default": 1000
+				}
+			}
+		}
+,
+		"twitchSource": {
+			"$id": "#root/twitchSource", 
+			"title": "Twitchsource", 
+			"type": "array",
+			"default": [],
+			"items":{
+				"$id": "#root/twitchSource/items", 
+				"title": "Items", 
+				"type": "string",
+				"default": ["P1 Browser", "P2 Browser", "P3 Browser", "P4 Browser"],
+				"examples": [
+					"P1 Browser"
+				],
+				"pattern": "^.*$"
+			}
+		},
+		"RTMPSource": {
+			"$id": "#root/RTMPSource", 
+			"title": "Rtmpsource", 
+			"type": "array",
+			"default": [],
+			"items":{
+				"$id": "#root/RTMPSource/items", 
+				"title": "Items", 
+				"type": "string",
+				"default": ["P1 Browser", "P2 Browser", "P3 Browser", "P4 Browser"],
+				"examples": [
+					"P1 Browser"
+				],
+				"pattern": "^.*$"
+			}
+		}
+	}
+}

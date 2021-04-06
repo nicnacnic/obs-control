@@ -1,0 +1,56 @@
+{
+  "name": "obs-control",
+  "version": "1.0.0",
+  "description": "A NodeCG bundle to control an instance of OBS.",
+  "homepage": "https://github.com/nicnacnic/obs-control",
+  "author": "nicnacnic",
+  "nodecg": {
+    "compatibleRange": "^1.6.0",
+    "dashboardPanels": [
+      {
+        "name": "preview-program",
+        "title": "OBS Prevew/Program",
+        "file": "preview-program.html",
+        "width": 9
+      },
+      {
+        "name": "audio",
+        "title": "Audio",
+        "file": "audio.html",
+        "width": 3
+      },
+      {
+        "name": "scene-control",
+        "title": "Scene Control",
+        "file": "scene-control.html",
+        "width": 3
+      },
+      {
+        "name": "stats",
+        "title": "Stats",
+        "file": "stats.html",
+        "width": 3
+      },
+      {
+        "name": "advanced-settings",
+        "title": "Settings",
+        "width": 3,
+        "file": "advanced-settings.html",
+        "dialog": true
+      }
+    ]
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@polymer/paper-button": "^3.0.1",
+    "@polymer/paper-dropdown-menu": "^3.2.0",
+    "@polymer/paper-input": "^3.2.1",
+    "@polymer/paper-item": "^3.0.1",
+    "@polymer/paper-listbox": "^3.0.1",
+    "@polymer/paper-slider": "^3.0.1",
+    "@polymer/paper-styles": "^3.0.1",
+    "@polymer/paper-tooltip": "^3.0.1",
+    "@polymer/polymer": "^3.4.1",
+    "obs-websocket-js": "^4.0.2"
+  }
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/preview-program.css" />
+		<script src="./js/preview-program.js"></script>
+		<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
+		<script type="module" src="/node_modules/@polymer/paper-styles/paper-styles.js"></script>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    </script>
+	</head>
+	<body>
+	<div id="main" style="overflow:hidden"> 
+		<div id="previewDiv"><img id="previewImg" src="./img/obs_browser.png" alt="./img/obs_browser.png" /></div>
+		<div id="transitionControl">
+			<div id="streamStatus">
+				<span id="streaming" class="material-icons" style="font-size: 24px; vertical-align:middle; margin-right: 3px;">surround_sound</span>
+				<span id="recording" class="material-icons" style="font-size: 24px; vertical-align:middle; margin-left: 3px;">fiber_manual_record</span>
+			</div>
+			<div id="transitionButtons">
+				<paper-button raised class="button" id="transition" style="top: 60px;" onclick="transitionToProgram();">Transition</paper-button>
+				<paper-button raised class="button" id="emergency" style="bottom: -68px"; onclick="emergencyTransition();">Emergency Transition</paper-button>
+<custom-style>
+  <style>
+   paper-button.button {
+	width: 250px;
+	height: 40px;
+	font-family: Roboto;
+	font-weight: 500;
+	font-size: 14px;
+	letter-spacing: .0892857143em;
+	  background-color: #272727;
+      --paper-button-ink-color: #6A6A6A;
+	};
+	paper-button.button:hover {
+		background-color: #383838;
+    };
+	paper-button.button[disabled] {
+		background-color: #485264;
+	}
+  </style>
+</custom-style>
+			</div>
+		</div>
+		<div id="programDiv" ><img id="programImg" src="./img/obs_browser.png" alt="./img/obs_browser.png" /></div>
+	</div>
+	</body>
+</html>

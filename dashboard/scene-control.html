@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/scene-control.css" />
+		<script src="./js/scene-control.js"></script>
+		<script type="module" src="/node_modules/@polymer/paper-item/paper-item.js"></script>
+		<script type="module" src="/node_modules/@polymer/paper-input/paper-input.js"></script>
+		<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
+		<script type="module" src="/node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js"></script>
+		<script type="module" src="/node_modules/@polymer/paper-listbox/paper-listbox.js"></script>
+		<script type="module" src="/node_modules/@polymer/paper-styles/paper-styles.js"></script>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    </script>
+	</head>
+	<body>
+	<div id="main">
+	<div id="scene">
+		<paper-dropdown-menu class="scenes" label="Scene" vertical-offset="60">
+  <paper-listbox slot="dropdown-content" class="dropdown-content" id="sceneList" onClick="changeScene('', false)">
+  </paper-listbox>
+</paper-dropdown-menu>
+	</div>
+	<div id="runnerInfo">
+	<div id="inputLeft" style="overflow:hidden"> 
+		<div id="input1">
+		<paper-input class="input" id="0" label="Player 1"></paper-input>
+		</div>
+		<div id="input3">
+		<paper-input class="input" id="2" label="Player 3"></paper-input>
+		</div>
+	</div>
+	<div id="inputRight" style="overflow:hidden"> 
+		<div id="input3">
+		<paper-input class="input" id="1" label="Player 2"></paper-input>
+		</div>
+		<div id="input4">
+		<paper-input class="input" id="3" label="Player 4"></paper-input>
+		</div>
+	</div>
+	</div>
+	</div>
+	<div id="quality">
+			<paper-dropdown-menu class="scenes" label="Quality" vertical-offset="-150">
+  <paper-listbox slot="dropdown-content" class="dropdown-content" id="qualityList">
+  <paper-item>Auto</paper-item>
+  <paper-item>Source</paper-item>
+  <paper-item>720p60</paper-item>
+  <paper-item>720p</paper-item>
+  <paper-item>480p</paper-item>
+  <paper-item>360p</paper-item>
+  <paper-item>160p</paper-item>
+  </paper-listbox>
+</paper-dropdown-menu>
+	</div>
+	<div id="buttons">
+	<paper-button raised class="button" id="update" onclick="updateSource();">
+	<span id="update" class="material-icons" style="font-size: 24px; vertical-align:middle;">done</span>
+	</paper-button>
+	<paper-button raised class="button" id="refresh" onclick="refreshSource();">
+	<span id="refresh" class="material-icons" style="font-size: 24px; vertical-align:middle;">refresh</span>
+	</paper-button>
+	<custom-style>
+  <style>
+  paper-input.input {
+      --primary-text-color: white;
+      --paper-input-container-color: #FFFFFFB3;
+      --paper-input-container-focus-color: #2196F3;
+	  --paper-input-container-underline-focus-border-color: #2196F3;
+  };
+   paper-button.button {
+	width: 10px;
+	height: 40px;
+	font-family: Roboto;
+	font-weight: 500;
+	font-size: 14px;
+	letter-spacing: .0892857143em;
+	  background-color: #272727;
+      --paper-button-ink-color: #6A6A6A;
+	};
+	paper-button.button:hover {
+		background-color: #383838;
+    };
+	paper-button.button[disabled] {
+		background-color: #485264;
+	};
+	 paper-dropdown-menu.scenes {
+		width: 100%;
+		margin-top: -500px;
+      --paper-input-container-color: #FFFFFFB3;
+      --paper-input-container-focus-color: #2196F3;
+	  --paper-input-container-input-color: #FFFFFF;
+	  --paper-input-container-underline-focus-border-color: #2196F3;
+    };
+	paper-listbox.dropdown-content {
+		width: 150px;
+		height: 200px;
+	}
+  </style>
+</custom-style>
+	</div>
+	</body>
+</html>

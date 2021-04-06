@@ -1,0 +1,21 @@
+#main {
+	width: 100%;
+	height: 100%;
+	font-family: Roboto;
+	font-weight: 500;
+	font-size: 14px;
+	letter-spacing: .0892857143em;
+}
+.table {
+	width: 100%;
+	height: 100%;
+}
+
+.data {
+	text-align: right;
+	font-weight: 300;
+}
+#settingsButton {
+	text-align: center;
+	margin-top: 14px;
+}
