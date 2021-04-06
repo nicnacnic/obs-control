@@ -1,2 +1,73 @@
 # obs-control
-A simple NodeCG bundle to control an instance of OBS.
+A  NodeCG bundle to control an instance of OBS.
+
+[![Release](https://img.shields.io/github/v/release/nicnacnic/obs-control?label=Release)](https://github.com/nicnacnic/speedcontrol-layouts/releases)
+![Downloads](https://img.shields.io/github/downloads/nicnacnic/obs-control/total?label=Downloads)
+![License](https://img.shields.io/github/license/nicnacnic/obs-control?label=License)
+[![Twitter](https://img.shields.io/twitter/follow/nicnacnic11?style=social)](https://twitter.com/nicnacnic11)
+[![Discord](https://img.shields.io/badge/-Join%20the%20Discord!-brightgreen?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/A34Qpfe)
+
+## About
+*This is a bundle for [NodeCG](https://github.com/nodecg/nodecg); if you do not understand what that is, we advise you read their website first for more information.*
+
+obs-control is a bundle for NodeCG to enable control of an OBS instance. Gone are the days where you need to use Teamviewer to let other staff/volenteers ontrol your stream.
+
+### Features
+- Full compatibility with OBS Websocket: perview/program, scene selection, audio mixer, stats, etc...
+- Auto-Record: Record whenever you're not in an intermission
+- Conpatible with [NodeCG Speedcontrol](https://github.com/speedcontrol/nodecg-speedcontrol), auto-change runner input and layout based on current run
+
+## Requirements
+- [NodeCG](https://github.com/nodecg/nodecg)
+- [OBS Websocket](https://github.com/Palakis/obs-websocket)
+
+If you would like to use the [NodeCG Speedcontrol](https://github.com/speedcontrol/nodecg-speedcontrol) features, make sure to install that too. Preferably the latest build of the dev branch.
+
+## Installation
+To install, navigate to your root NodeCG directory and run the following command.
+
+```nodecg install nicnacnic/obs-control```
+
+After the installation completes, create a config file by running `nodecg defaultconfig obs-control`. A walkthrough of the config file can be found on the [wiki]().
+
+## Usage
+Once the bundle is configured properly, usage is pretty simple. On first load, the bundle will load all scenes and audio sources. Simply press the appropiate buttons to control OBS.
+
+A dashboard and sample user guide can be found on the [wiki](https://github.com/nicnacnic/obs-control/wiki).
+
+## Commission Work
+Commission work is availibe! If you don't have any coding experience, or simply don't have time to develop, I can help bring your project or event to life. More information can be found by visiting my website at [https://www.nicnacnic.com/commission-work](https://www.nicnacnic.com/commission-work) or contacting me through Discord.
+
+## Other Bundles
+- [speedcontrol-layouts](https://github.com/nicnacnic/speedcontrol-layouts) A pack of simple yet easily customizable layouts, works very well with this bundle!
+- [tweetr]() (in development) Send and schedule tweets right from the dashboard!
+
+## Contributing
+There is a lot of ineffecient code in this bundle. If you can optimize the code, or add new features, submit a pull request! Before you do, please make sure to **test your code**.
+
+Bugs or glitches should first be checked against the list of [known bugs](https://github.com/nicnacnic/obs-control/wiki), then by creating an issue in the [issue tracker](https://github.com/nicnacnic/obs-control/issues). Suggestions are always welcome!
+
+If you're having issues or just want to chat, I can be reached on my [Discord](https://discord.gg/A34Qpfe) server.
+
+## License
+MIT  License
+
+Copyright (c) 2021 nicnacnic
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
