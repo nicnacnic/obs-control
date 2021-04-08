@@ -34,3 +34,7 @@
 	display: inline-block;
 	float: right;
 }
+.imgs {
+	width: 480px;
+	height: 270px;
+}

@@ -4,6 +4,8 @@
   "description": "A NodeCG bundle to control an instance of OBS.",
   "homepage": "https://github.com/nicnacnic/obs-control",
   "author": "nicnacnic",
+  "url": "https://nicnacnic.com",
+  "license": "MIT",
   "nodecg": {
     "compatibleRange": "^1.6.0",
     "dashboardPanels": [
@@ -40,16 +42,14 @@
       }
     ]
   },
-  "license": "MIT",
   "dependencies": {
     "@polymer/paper-button": "^3.0.1",
-    "@polymer/paper-item": "^3.0.1",
-    "@polymer/paper-listbox": "^3.0.1",
     "@polymer/paper-dropdown-menu": "^3.2.0",
     "@polymer/paper-input": "^3.2.1",
+    "@polymer/paper-item": "^3.0.1",
+    "@polymer/paper-listbox": "^3.0.1",
     "@polymer/paper-slider": "^3.0.1",
     "@polymer/paper-styles": "^3.0.1",
-    "@polymer/paper-tooltip": "^3.0.1",
     "@polymer/polymer": "^3.4.1",
     "obs-websocket-js": "^4.0.2"
   }
