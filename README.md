@@ -21,14 +21,14 @@ obs-control is a bundle for NodeCG to enable control of an OBS instance. Gone ar
 - [NodeCG](https://github.com/nodecg/nodecg)
 - [OBS Websocket](https://github.com/Palakis/obs-websocket)
 
-If you would like to use the [NodeCG Speedcontrol](https://github.com/speedcontrol/nodecg-speedcontrol) features, make sure to install that too. Preferably the latest build of the dev branch.
+If you would like to use the [NodeCG Speedcontrol](https://github.com/speedcontrol/nodecg-speedcontrol) features, make sure to install that too. You need to use the latest version of the dev branch, the master branch will not work. Please view the [wiki](https://github.com/nicnacnic/obs-control/wiki) for more information.
 
 ## Installation
 To install, navigate to your root NodeCG directory and run the following command.
 
 ```nodecg install nicnacnic/obs-control```
 
-After the installation completes, create a config file by running `nodecg defaultconfig obs-control`. A walkthrough of the config file can be found on the [wiki]().
+After the installation completes, create a config file by running `nodecg defaultconfig obs-control`. A walkthrough of the config file can be found on the [wiki](https://github.com/nicnacnic/obs-control/wiki).
 
 ## Usage
 Once the bundle is configured properly, usage is pretty simple. On first load, the bundle will load all scenes and audio sources. Simply press the appropriate buttons to control OBS.
