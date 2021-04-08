@@ -1,17 +1,11 @@
 'use strict';
 
-const express = require('express');
-const app = express();
-const path = require('path');
-const transformMiddleware = require('express-transform-bare-module-specifiers').default;
 const OBSWebSocket = require('obs-websocket-js');
 const websocketEvents = ['PreviewSceneChanged', 'TransitionBegin', 'TransitionEnd', 'StreamStarted', 'StreamStopped', 'RecordingStarted', 'RecordingStopped', 'SourceMuteStateChanged', 'SourceVolumeChanged', 'StreamStatus'];
 let runnerArray = ['', '', '', '', ''];
-let currentRun;
 let connectionError = false;
+let currentRun;
 let autoRecord;
-
-app.use('*', transformMiddleware());
 
 module.exports = function(nodecg) {
 	autoRecord = nodecg.bundleConfig.autoRecord;

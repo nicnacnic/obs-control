@@ -1,8 +1,6 @@
 'use strict';
 let audioSourceList = [];
 
-setTimeout(function() { createSliders(); }, 2500);
-
 function createSliders() {
 
 	const main = document.getElementById("main");

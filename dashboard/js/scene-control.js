@@ -18,9 +18,18 @@ if (nodecg.bundleConfig.speedcontrol.useSpeedcontrolData) {
 	}
 }
 
-
-setDropdown();
-setTimeout(function() { setSource(); }, 3000);
+	nodecg.listenFor('obsEvent', (value, ack) => {
+		if (value.updateType === 'PreviewSceneChanged') {
+			const dropdownContent = document.getElementById("sceneList");
+			const items = dropdownContent.items;
+			for (let i = 0; i < items.length; i++) {
+				if (items[i].outerText === value.sceneName) {
+					dropdownContent.selectIndex(i);
+					break;
+				}
+			}
+		}
+	});
 
 function setDropdown() {
 	let previewScene;
@@ -54,19 +63,6 @@ function changeScene() {
 	})
 }
 
-nodecg.listenFor('obsEvent', (value, ack) => {
-	if (value.updateType === 'PreviewSceneChanged') {
-		const dropdownContent = document.getElementById("sceneList");
-		const items = dropdownContent.items;
-		for (let i = 0; i < items.length; i++) {
-			if (items[i].outerText === value.sceneName) {
-				dropdownContent.selectIndex(i);
-				break;
-			}
-		}
-	}
-});
-
 function setSource() {
 	nodecg.sendMessage('getRunners', '', (error, result) => {
 		for (let i = 0; i < 4; i++) {
@@ -76,15 +72,21 @@ function setSource() {
 				document.getElementById(i).setAttribute('value', '');
 		}
 		const dropdownContent = document.getElementById("qualityList");
-		const items = dropdownContent.items;
-		for (let i = 0; i < items.length; i++) {
-			if (items[i].outerText === result[4]) {
-				dropdownContent.selectIndex(i);
-				break;
+		let items;
+		let checkExist = setInterval(function() {
+			items = dropdownContent.items;
+			if (items !== undefined) {
+				for (let i = 0; i < items.length; i++) {
+					if (items[i].outerText === result[4]) {
+						dropdownContent.selectIndex(i);
+						break;
+					}
+					else if (i + 1 === items.length)
+						dropdownContent.selectIndex(0);
+				}
+				clearInterval(checkExist);
 			}
-			else if (i + 1 === items.length)
-				dropdownContent.selectIndex(0);
-		}
+		}, 100);
 	});
 }
 
