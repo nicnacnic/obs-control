@@ -1,3 +1,4 @@
+![cover](https://user-images.githubusercontent.com/39160563/114103620-75df8a80-9897-11eb-8889-0d6c9fcab604.PNG)
 # obs-control
 A  NodeCG bundle to control an instance of OBS. 
 
