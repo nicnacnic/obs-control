@@ -10,7 +10,7 @@ A  NodeCG bundle to control an instance of OBS.
 ## About
 *This is a bundle for [NodeCG](https://github.com/nodecg/nodecg); if you do not understand what that is, we advise you read their website first for more information.*
 
-obs-control is a bundle for NodeCG to enable control of an OBS instance. Gone are the days where you need to use Teamviewer to let other staff/volunteers control your stream.
+obs-control is a bundle for NodeCG to enable control of an OBS instance. This bundle is meant for speedrunning marathons, therefore it includes all the features one might need to pull off an online marathon. Gone are the days where you need to use Teamviewer to let other staff/volunteers control your stream.
 
 ### Features
 - Full compatibility with OBS Websocket: preview/program, scene selection, audio mixer, stats, etc...
