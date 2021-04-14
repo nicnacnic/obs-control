@@ -1,7 +1,7 @@
 'use strict';
 let audioSourceList = [];
 
-function createSliders() {
+window.addEventListener('load', function() {
 
 	const main = document.getElementById("main");
 
@@ -100,7 +100,7 @@ function createSliders() {
 			});
 		}
 	});
-}
+})
 
 function toggleMute(label) {
 	let id = label.id.replace(/\D/g, '');

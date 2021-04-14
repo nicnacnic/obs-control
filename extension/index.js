@@ -80,7 +80,7 @@ module.exports = function(nodecg) {
 		}
 		else
 			nodecg.log.warn(JSON.stringify(error, null, 2))
-			nodecg.log.warn(JSON.stringify(value, null, 2))
+		nodecg.log.warn(JSON.stringify(value, null, 2))
 	}
 
 	nodecg.listenFor('setAutoRecord', (value, ack) => {
