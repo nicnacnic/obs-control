@@ -34,7 +34,7 @@ After the installation completes, create a config file by running `nodecg defaul
 ## Usage
 Once the bundle is configured properly, usage is pretty simple. On first load, the bundle will load all scenes and audio sources. Simply press the appropriate buttons to control OBS.
 
-A dashboard and sample user guide can be found on the [wiki](https://github.com/nicnacnic/obs-control/wiki).
+A setup and sample user guide can be found on the [wiki](https://github.com/nicnacnic/obs-control/wiki).
 
 ## Commission Work
 Commission work is available! If you don't have any coding experience, or simply don't have time to develop, I can help bring your project or event to life. More information can be found by visiting my website at [https://www.nicnacnic.com/commission-work](https://www.nicnacnic.com/commission-work) or contacting me through Discord.
