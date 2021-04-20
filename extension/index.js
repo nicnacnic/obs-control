@@ -1,7 +1,7 @@
 'use strict';
 
 const OBSWebSocket = require('obs-websocket-js');
-const websocketEvents = ['PreviewSceneChanged', 'TransitionBegin', 'TransitionEnd', 'StreamStarted', 'StreamStopped', 'RecordingStarted', 'RecordingStopped', 'SourceMuteStateChanged', 'SourceVolumeChanged', 'StreamStatus'];
+const websocketEvents = ['PreviewSceneChanged', 'TransitionBegin', 'TransitionEnd', 'StreamStarted', 'StreamStopped', 'RecordingStarted', 'RecordingStopped', 'SourceMuteStateChanged', 'SourceVolumeChanged', 'StreamStatus', 'SourceAudioSyncOffsetChanged'];
 let runnerArray = ['', '', '', '', ''];
 let connectionError = false;
 let currentRun;
