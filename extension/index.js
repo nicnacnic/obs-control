@@ -26,7 +26,8 @@ module.exports = function(nodecg) {
 				obs.send(value.request, value.args).then(data => {
 					ack(null, data);
 				}).catch((error) => {
-					websocketError(error, value);
+					if (value.request !== "GetSceneItemProperties")
+						websocketError(error, value);
 				});
 			}
 		});
