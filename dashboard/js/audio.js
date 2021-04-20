@@ -164,8 +164,9 @@ function changeVolume(slider) {
 			volume: value,
 		}
 	}, (error, result) => {
-		if (!isFinite(displayValue))
+		if (!isFinite(displayValue)) {
 			document.getElementById("label" + id).innerHTML = "-inf dB";
+			}
 		else
 			document.getElementById("label" + id).innerHTML = displayValue + " dB";
 	});
@@ -187,10 +188,14 @@ nodecg.listenFor('obsEvent', (value, ack) => {
 	if (value.updateType === 'SourceMuteStateChanged') {
 		let index = findIndex(value.sourceName)
 		if (index !== null) {
-			if (value.muted)
+			if (value.muted) {
 				document.getElementById("button" + index).innerHTML = "volume_off";
-			else
+				document.getElementById("button" + index).style.color = "red";
+				}
+			else {
 				document.getElementById("button" + index).innerHTML = "volume_up";
+				document.getElementById("button" + index).style.color = "white";
+			}
 		}
 	}
 	else if (value.updateType === 'SourceVolumeChanged') {
