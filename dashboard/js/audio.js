@@ -27,8 +27,7 @@ window.addEventListener('load', function() {
 			var textB = b.name.toUpperCase();
 			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
 		});
-
-		Array.prototype.push.apply(audioSourceList, browserSources);
+		
 		Array.prototype.push.apply(audioSourceList, mediaSources);
 
 		for (let i = 0; i < audioSourceList.length; i++) {
@@ -97,7 +96,7 @@ window.addEventListener('load', function() {
 				syncOffset.setAttribute("id", "sync" + i);
 				syncOffset.setAttribute("class", "syncOffset");
 				syncOffset.setAttribute("type", "number");
-				syncOffset.setAttribute("no-label-float");
+				syncOffset.setAttribute("no-label-float", '');
 				syncOffset.setAttribute("onChange", "changeSync(this)");
 				nodecg.sendMessage('obsRequest', {
 					request: 'GetSyncOffset',
