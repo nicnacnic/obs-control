@@ -4,30 +4,41 @@ let audioSourceList = [];
 window.addEventListener('load', function() {
 
 	const main = document.getElementById("main");
-	
+
 	let inputSources = [];
+	let playerSources = [];
 	let mediaSources = [];
 	nodecg.sendMessage('obsRequest', {
 		request: 'GetSourcesList',
 	}, (error, result) => {
 		for (let i = 0; i < result.sources.length; i++) {
-				if (result.sources[i].typeId === ('wasapi_input_capture' || 'wasapi_output_capture' || 'pulse_input_capture' || 'pulse_output_capture'))
-					inputSources.push(result.sources[i]);
-				else if (nodecg.bundleConfig.mediaAudioSources.includes(result.sources[i].name))
-					mediaSources.push(result.sources[i]);
+			if (nodecg.bundleConfig.playerFeeds.includes(result.sources[i].name))
+				playerSources.push(result.sources[i]);
+			else if (nodecg.bundleConfig.audioSources !== undefined && nodecg.bundleConfig.audioSources.includes(result.sources[i].name))
+				mediaSources.push(result.sources[i]);
+			else if (result.sources[i].typeId === 'wasapi_input_capture' || result.sources[i].typeId === 'wasapi_output_capture' || result.sources[i].typeId === 'pulse_input_capture' || result.sources[i].typeId === 'pulse_output_capture')
+				inputSources.push(result.sources[i]);
 		}
+
+		playerSources.sort(function(a, b) {
+			var textA = a.name.toUpperCase();
+			var textB = b.name.toUpperCase();
+			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+		});
+
 		inputSources.sort(function(a, b) {
 			var textA = a.name.toUpperCase();
 			var textB = b.name.toUpperCase();
 			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
 		});
-		
+
 		mediaSources.sort(function(a, b) {
 			var textA = a.name.toUpperCase();
 			var textB = b.name.toUpperCase();
 			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
 		});
-		
+
+		Array.prototype.push.apply(audioSourceList, playerSources);
 		Array.prototype.push.apply(audioSourceList, mediaSources);
 		Array.prototype.push.apply(audioSourceList, inputSources);
 
@@ -74,11 +85,11 @@ window.addEventListener('load', function() {
 				if (muted) {
 					muteButtonIcon.innerHTML = "volume_off";
 					muteButtonIcon.style.color = 'red';
-					}
+				}
 				else {
 					muteButtonIcon.innerHTML = "volume_up";
 					muteButtonIcon.style.color = 'white';
-					};
+				};
 
 				let slider = document.createElement("paper-slider");
 				slider.setAttribute("id", "slider" + i);
@@ -97,7 +108,7 @@ window.addEventListener('load', function() {
 				syncOffset.setAttribute("id", "sync" + i);
 				syncOffset.setAttribute("class", "syncOffset");
 				syncOffset.setAttribute("type", "number");
-				syncOffset.setAttribute("no-label-float", '');
+				syncOffset.setAttribute("no-label-float");
 				syncOffset.setAttribute("onChange", "changeSync(this)");
 				nodecg.sendMessage('obsRequest', {
 					request: 'GetSyncOffset',
@@ -161,7 +172,7 @@ function changeVolume(slider) {
 	}, (error, result) => {
 		if (!isFinite(displayValue)) {
 			document.getElementById("label" + id).innerHTML = "-inf dB";
-			}
+		}
 		else
 			document.getElementById("label" + id).innerHTML = displayValue + " dB";
 	});
@@ -186,7 +197,7 @@ nodecg.listenFor('obsEvent', (value, ack) => {
 			if (value.muted) {
 				document.getElementById("button" + index).innerHTML = "volume_off";
 				document.getElementById("button" + index).style.color = "red";
-				}
+			}
 			else {
 				document.getElementById("button" + index).innerHTML = "volume_up";
 				document.getElementById("button" + index).style.color = "white";
@@ -206,9 +217,9 @@ nodecg.listenFor('obsEvent', (value, ack) => {
 	}
 	else if (value.updateType === 'SourceAudioSyncOffsetChanged') {
 		let index = findIndex(value.sourceName)
-			if (index !== null) {
-				document.getElementById("sync" + index).value = (value.syncOffset / 1000000);
-			}
+		if (index !== null) {
+			document.getElementById("sync" + index).value = (value.syncOffset / 1000000);
+		}
 	}
 });
 

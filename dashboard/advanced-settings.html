@@ -1,39 +1,45 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="css/advanced-settings.css" />
-		<script src="./js/advanced-settings.js"></script>
-		<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
-		<script type="module" src="/node_modules/@polymer/paper-input/paper-input.js"></script>
-		<script type="module" src="/node_modules/@polymer/paper-styles/paper-styles.js"></script>
-		<link rel="preconnect" href="https://fonts.gstatic.com">
-		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-		</script>
-	</head>
-	<body>
-		<div id="main">
-			<div class="inputDiv">
-				<paper-input class="input" id="password" label="Password" type="password" error-message="Incorrect password!"></paper-input>
-				<paper-button class="toggle" id="passwordSubmit" style="width: 100px;" onClick="validatePassword()">Submit</paper-button>
-			</div>
-			<div class="buttonDiv">
-				<paper-button toggles disabled raised class="toggle" id="toggleStream" onClick="toggleStream()">Start Streaming</paper-button>
-			</div>
-			<div class="buttonDiv">
-				<paper-button toggles disabled raised class="toggle" id="toggleRecording" onClick="toggleRecording()">Start Recording</paper-button>
-			</div>
-			<div class="buttonDiv">
-				<paper-button toggles disabled raised class="toggle" id="toggleAutoRecord" onClick="toggleAutoRecord()">Turn On Auto Record</paper-button>
-			</div>
-			<div class="buttonDiv">
-				<paper-button disabled raised class="toggle" id="reauthenticate" onClick="reauthenticate()">Reauthenticate</paper-button>
-			</div>
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="css/advanced-settings.css" />
+	<script src="./js/modules.js"></script>
+	<script src="./js/advanced-settings.js"></script>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+	</script>
+</head>
+
+<body>
+	<div id="main">
+		<div class="inputDiv">
+			<paper-input class="input" id="password" label="Password" type="password"
+				error-message="Incorrect password!"></paper-input>
+			<paper-button class="toggle" id="passwordSubmit" style="width: 100px;" onClick="validatePassword()">Submit
+			</paper-button>
 		</div>
-		<custom-style>
-			<style>
-				paper-input.input {
+		<div class="buttonDiv">
+			<paper-button toggles disabled raised class="toggle" id="toggleStream" onClick="toggleStream()">Start
+				Streaming</paper-button>
+		</div>
+		<div class="buttonDiv">
+			<paper-button toggles disabled raised class="toggle" id="toggleRecording" onClick="toggleRecording()">Start
+				Recording</paper-button>
+		</div>
+		<div class="buttonDiv">
+			<paper-button toggles disabled raised class="toggle" id="toggleAutoRecord" onClick="toggleAutoRecord()">Turn
+				On Auto Record</paper-button>
+		</div>
+		<div class="buttonDiv">
+			<paper-button disabled raised class="toggle" id="reauthenticate" onClick="reauthenticate()">Reauthenticate
+			</paper-button>
+		</div>
+	</div>
+	<custom-style>
+		<style>
+			paper-input.input {
 				width: 60%;
 				margin-right: 20px;
 				display: inline-block;
@@ -41,8 +47,9 @@
 				--paper-input-container-color: #FFFFFFB3;
 				--paper-input-container-focus-color: #2196F3;
 				--paper-input-container-underline-focus-border-color: #2196F3;
-				};
-				paper-button.toggle {
+			}
+
+			paper-button.toggle {
 				width: 250px;
 				height: 40px;
 				font-family: Roboto;
@@ -51,17 +58,21 @@
 				letter-spacing: .0892857143em;
 				background-color: #272727;
 				--paper-button-ink-color: #6A6A6A;
-				};
-				paper-button.toggle:hover {
+			}
+
+			paper-button.toggle:hover {
 				background-color: #383838;
-				};
-				paper-button.toggle[active] {
+			}
+
+			paper-button.toggle[active] {
 				background-color: #990000;
-				};
-				paper-button.toggle[disabled] {
+			}
+
+			paper-button.toggle[disabled] {
 				background-color: #485264;
-				}
-			</style>
-		</custom-style>
-	</body>
+			}
+		</style>
+	</custom-style>
+</body>
+
 </html>

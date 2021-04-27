@@ -4,7 +4,7 @@ let previewScene;
 let itemProperties = [];
 
 window.addEventListener('load', function() {
-
+	
 	nodecg.sendMessage('obsRequest', {
 		request: 'GetPreviewScene',
 	}, (error, result) => {
@@ -17,21 +17,23 @@ window.addEventListener('load', function() {
 	}, (error, result) => {
 		const dropdownContent = document.getElementById("sourceList");
 		for (let i = 0; i < result.sources.length; i++) {
-			let paperItem = document.createElement("paper-item");
-			paperItem.innerHTML = result.sources[i].name;
-			dropdownContent.appendChild(paperItem);
+			if (result.sources[i].type === 'input' && !result.sources[i].typeId.includes("input") && !result.sources[i].typeId.includes("output")) {
+				let paperItem = document.createElement("paper-item");
+				paperItem.innerHTML = result.sources[i].name;
+				dropdownContent.appendChild(paperItem);
+			}
 		}
 		dropdownContent.setAttribute('selected', 0)
 	});
 
 	window.setInterval(takePreviewScreenshot, nodecg.bundleConfig.obsWebsocket.previewRefresh);
 
-	nodecg.listenFor('obsEvent', (value, ack) => {
-		if (value.updateType === 'PreviewSceneChanged') {
-			previewScene = value.sceneName;
-			setSource();
-		}
-	})
+		nodecg.listenFor('obsEvent', (value, ack) => {
+			if (value.updateType === 'PreviewSceneChanged') {
+				previewScene = value.sceneName;
+				setSource();
+			}
+		})
 });
 
 function setSource() {

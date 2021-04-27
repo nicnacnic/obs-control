@@ -2,7 +2,6 @@
     "$id": "http://example.com/example.json",
     "$schema": "http://json-schema.org/draft-07/schema",
     "default": {
-        "autoRecord": false,
         "useRTMP": false,
         "RTMPServerURL": "rtmp://rtmp.example.com/live",
         "settingsPassword": "password",
@@ -12,20 +11,25 @@
             "setLayout": false
         },
         "obsWebsocket": {
-            "address": " localhost:4444",
+            "address": "localhost:4444",
             "password": "password",
             "previewRefresh": 1000
         },
-        "mediaAudioSources": [
-            "VLC Player",
-            "Twitch Stream",
-            "Music"
+        "playerFeeds": [
+            "P1 Browser",
+            "P2 Browser",
+            "P3 Browser",
+            "P4 Browser"
+        ],
+        "audioSources": [
+            "Media",
+            "Music Player",
+            "VLC Video"
         ]
     },
     "description": "The root schema comprises the entire JSON document.",
     "examples": [
         {
-            "autoRecord": false,
             "useRTMP": false,
             "RTMPServerURL": "rtmp://rtmp.example.com/live",
             "settingsPassword": "password",
@@ -35,39 +39,35 @@
                 "setLayout": false
             },
             "obsWebsocket": {
-                "address": " localhost:4444",
+                "address": "localhost:4444",
                 "password": "password",
                 "previewRefresh": 1000
             },
-            "mediaAudioSources": [
-                "VLC Player",
-                "Twitch Stream",
-                "Music"
+            "playerFeeds": [
+                "P1 Browser",
+                "P2 Browser",
+                "P3 Browser",
+                "P4 Browser"
+            ],
+            "audioSources": [
+                "Media",
+                "Music Player",
+                "VLC Video"
             ]
         }
     ],
     "required": [
-        "autoRecord",
         "useRTMP",
         "RTMPServerURL",
         "settingsPassword",
         "speedcontrol",
         "obsWebsocket",
-        "mediaAudioSources"
+        "playerFeeds",
+        "audioSources"
     ],
     "title": "The root schema",
     "type": "object",
     "properties": {
-        "autoRecord": {
-            "$id": "#/properties/autoRecord",
-            "type": "boolean",
-            "title": "The autoRecord schema",
-            "description": "An explanation about the purpose of this instance.",
-            "default": false,
-            "examples": [
-                false
-            ]
-        },
         "useRTMP": {
             "$id": "#/properties/useRTMP",
             "type": "boolean",
@@ -158,7 +158,7 @@
             "default": {},
             "examples": [
                 {
-                    "address": " localhost:4444",
+                    "address": "localhost:4444",
                     "password": "password",
                     "previewRefresh": 1000
                 }
@@ -176,7 +176,7 @@
                     "description": "An explanation about the purpose of this instance.",
                     "default": "",
                     "examples": [
-                        " localhost:4444"
+                        "localhost:4444"
                     ]
                 },
                 "password": {
@@ -202,31 +202,61 @@
             },
             "additionalProperties": true
         },
-        "mediaAudioSources": {
-            "$id": "#/properties/mediaAudioSources",
+        "playerFeeds": {
+            "$id": "#/properties/playerFeeds",
             "type": "array",
-            "title": "The mediaAudioSources schema",
+            "title": "The playerFeeds schema",
             "description": "An explanation about the purpose of this instance.",
             "default": [],
             "examples": [
                 [
-                    "VLC Player",
-                    "Twitch Stream"
+                    "P1 Browser",
+                    "P2 Browser"
                 ]
             ],
             "additionalItems": true,
             "items": {
-                "$id": "#/properties/mediaAudioSources/items",
+                "$id": "#/properties/playerFeeds/items",
                 "anyOf": [
                     {
-                        "$id": "#/properties/mediaAudioSources/items/anyOf/0",
+                        "$id": "#/properties/playerFeeds/items/anyOf/0",
                         "type": "string",
                         "title": "The first anyOf schema",
                         "description": "An explanation about the purpose of this instance.",
                         "default": "",
                         "examples": [
-                            "VLC Player",
-                            "Twitch Stream"
+                            "P1 Browser",
+                            "P2 Browser"
+                        ]
+                    }
+                ]
+            }
+        },
+        "audioSources": {
+            "$id": "#/properties/audioSources",
+            "type": "array",
+            "title": "The audioSources schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": [],
+            "examples": [
+                [
+                    "Media",
+                    "Music Player"
+                ]
+            ],
+            "additionalItems": true,
+            "items": {
+                "$id": "#/properties/audioSources/items",
+                "anyOf": [
+                    {
+                        "$id": "#/properties/audioSources/items/anyOf/0",
+                        "type": "string",
+                        "title": "The first anyOf schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "Media",
+                            "Music Player"
                         ]
                     }
                 ]

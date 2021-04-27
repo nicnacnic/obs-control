@@ -146,7 +146,7 @@ function setStreamKey(streamKey, index, quality) {
 		nodecg.sendMessage('obsRequest', {
 			request: 'SetSourceSettings',
 			args: {
-				sourceName: nodecg.bundleConfig.RTMPSource[index],
+				sourceName: nodecg.bundleConfig.playerFeeds[index],
 				sourceSettings: {
 					input: nodecg.bundleConfig.RTMPServerURL + streamKey,
 				}
@@ -157,7 +157,7 @@ function setStreamKey(streamKey, index, quality) {
 		nodecg.sendMessage('obsRequest', {
 			request: 'SetSourceSettings',
 			args: {
-				sourceName: nodecg.bundleConfig.twitchSource[index],
+				sourceName: nodecg.bundleConfig.playerFeeds[index],
 				sourceSettings: {
 					url: 'https://player.twitch.tv/?parent=BLAH&volume=1&!muted&channel=' + streamKey + quality,
 				}
@@ -169,19 +169,28 @@ function setStreamKey(streamKey, index, quality) {
 function refreshSource() {
 	let source;
 	for (let i = 0; i < 4; i++) {
-		if (nodecg.bundleConfig.useRTMP)
-			source = nodecg.bundleConfig.RTMPSource[i];
-		else
-			source = nodecg.bundleConfig.twitchSource[i];
-		nodecg.sendMessage('obsRequest', {
-			request: 'SetSourceSettings',
-			args: {
-				sourceName: source,
-				sourceSettings: {
-					url: '',
+		source = nodecg.bundleConfig.playerFeeds[i];
+		if (nodecg.bundleConfig.useRTMP) {
+			nodecg.sendMessage('obsRequest', {
+				request: 'RestartMedia',
+				args: {
+					sourceName: source,
+					sourceSettings: {
+						url: '',
+					}
 				}
-			}
-		})
+			})
+		}
+		else {
+			nodecg.sendMessage('obsRequest', {
+				request: 'RefreshBrowserSource',
+				args: {
+					sourceName: source,
+					sourceSettings: {
+						url: '',
+					}
+				}
+			})
+		}
 	}
-	setTimeout(function() { updateSource('', false) }, 100);
 }

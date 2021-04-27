@@ -1,72 +1,74 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="css/stats.css" />
-		<script src="./js/stats.js"></script>
-		<script type="module" src="/node_modules/@polymer/paper-button/paper-button.js"></script>
-		<script type="module" src="/node_modules/@polymer/paper-styles/paper-styles.js"></script>
-		<link rel="preconnect" href="https://fonts.gstatic.com">
-		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-		</script>
-	</head>
-	<body>
-		<div id="main">
-			<table class="table">
-				<tbody>
-					<tr>
-						<td>CPU Usage</td>
-						<td id="cpuUsage" class="data">0.0%</td>
-					</tr>
-					<tr>
-						<td>Frames Per Second</td>
-						<td id="fps" class="data">0.0 FPS</td>
-					</tr>
-					<tr>
-						<td>Bitrate</td>
-						<td id="bitrate" class="data">0 kb/s</td>
-					</tr>
-					<tr>
-						<td>Frame Time</td>
-						<td id="frameTime" class="data">0.0 ms</td>
-					</tr>
-					<tr>
-						<td>Missed Frames</td>
-						<td id="rendering" class="data">0 / 0 (0.0%)</td>
-					</tr>
-					<tr>
-						<td>Skipped Frames</td>
-						<td id="encoding" class="data">0 / 0 (0.0%)</td>
-					</tr>
-					<tr>
-						<td>Network Dropped Frames</td>
-						<td id="network" class="data">0 / 0 (0.0%)</td>
-					</tr>
-					<tr>
-						<td>Uptime</td>
-						<td id="uptime" class="data">00:00:00</td>
-					</tr>
-					<tr>
-						<td>Disk Space</td>
-						<td id="diskSpace" class="data">0.0 GB</td>
-					</tr>
-					<tr>
-						<td>Auto Record</td>
-						<td id="autoRecord" class="data">null</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
-			<div id="settingsButton">
-				<paper-button raised class="nodecg-configure" nodecg-dialog="advanced-settings" onClick="clearSettings()">Settings</paper-button>
-			</div>
-			<custom-style>
-				<style>
-					paper-button.nodecg-configure {
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="css/stats.css" />
+	<script src="./js/modules.js"></script>
+	<script src="./js/stats.js"></script>
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+	</script>
+</head>
+
+<body>
+	<div id="main">
+		<table class="table">
+			<tbody>
+				<tr>
+					<td>CPU Usage</td>
+					<td id="cpuUsage" class="data">0.0%</td>
+				</tr>
+				<tr>
+					<td>Frames Per Second</td>
+					<td id="fps" class="data">0.0 FPS</td>
+				</tr>
+				<tr>
+					<td>Bitrate</td>
+					<td id="bitrate" class="data">0 kb/s</td>
+				</tr>
+				<tr>
+					<td>Frame Time</td>
+					<td id="frameTime" class="data">0.0 ms</td>
+				</tr>
+				<tr>
+					<td>Missed Frames</td>
+					<td id="rendering" class="data">0 / 0 (0.0%)</td>
+				</tr>
+				<tr>
+					<td>Skipped Frames</td>
+					<td id="encoding" class="data">0 / 0 (0.0%)</td>
+				</tr>
+				<tr>
+					<td>Network Dropped Frames</td>
+					<td id="network" class="data">0 / 0 (0.0%)</td>
+				</tr>
+				<tr>
+					<td>Uptime</td>
+					<td id="uptime" class="data">00:00:00</td>
+				</tr>
+				<tr>
+					<td>Disk Space</td>
+					<td id="diskSpace" class="data">0.0 GB</td>
+				</tr>
+				<tr>
+					<td>Auto Record</td>
+					<td id="autoRecord" class="data">null</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<div id="settingsButton">
+			<paper-button raised class="nodecg-configure" nodecg-dialog="advanced-settings" onClick="clearSettings()">
+				Settings</paper-button>
+		</div>
+		<custom-style>
+			<style>
+				paper-button.nodecg-configure {
 					width: 120px;
 					height: 40px;
 					font-family: Roboto;
@@ -75,15 +77,18 @@
 					letter-spacing: .0892857143em;
 					background-color: #272727;
 					--paper-button-ink-color: #6A6A6A;
-					};
-					paper-button.button:hover {
+				}
+
+				paper-button.button:hover {
 					background-color: #383838;
-					};
-					paper-button.button[disabled] {
+				}
+
+				paper-button.button[disabled] {
 					background-color: #485264;
-					};
-				</style>
-			</custom-style>
-		</div>
-	</body>
+				}
+			</style>
+		</custom-style>
+	</div>
+</body>
+
 </html>

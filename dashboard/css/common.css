@@ -1,0 +1,6 @@
+.mdc-button {
+	--mdc-theme-primary: #272727;
+	--mdc-theme-primary-bg: #272727;
+	--mdc-theme-secondary: red;
+	height: 40px;
+};

@@ -1,20 +1,39 @@
 'use strict';
 
-getStreamStatus();
+window.addEventListener('load', function() {
+	checkStatus();
+});
 
-function getStreamStatus() {
+function getStreamingStatus(callback) {
 	nodecg.sendMessage('obsRequest', {
 		request: 'GetStreamingStatus',
 	}, (error, result) => {
-		if (result.streaming) {
+		callback(result.streaming);
+	});
+}
+
+function getRecordingStatus(callback) {
+	nodecg.sendMessage('obsRequest', {
+		request: 'GetStreamingStatus',
+	}, (error, result) => {
+		callback(result.recording);
+	});
+}
+
+async function checkStatus() {
+	getStreamingStatus(function(streamStatus) {
+		if (streamStatus) {
 			document.getElementById("toggleStream").setAttribute("active", true);
 			document.getElementById("toggleStream").innerHTML = "Stop Streaming";
 		}
+
 		else {
 			document.getElementById("toggleStream").removeAttribute("active");
 			document.getElementById("toggleStream").innerHTML = "Start Streaming";
 		}
-		if (result.recording) {
+	});
+	getRecordingStatus(function(recordingStatus) {
+		if (recordingStatus) {
 			document.getElementById("toggleRecording").setAttribute("active", true);
 			document.getElementById("toggleRecording").innerHTML = "Stop Recording";
 		}
@@ -22,17 +41,17 @@ function getStreamStatus() {
 			document.getElementById("toggleRecording").removeAttribute("active");
 			document.getElementById("toggleRecording").innerHTML = "Start Recording";
 		}
-		nodecg.sendMessage('getAutoRecord', '', (error, result2) => {
-			if (result2) {
-				document.getElementById("toggleAutoRecord").setAttribute("active", true);
-				document.getElementById("toggleAutoRecord").innerHTML = 'Turn Off Auto Record';
-			}
-			else {
-				document.getElementById("toggleAutoRecord").removeAttribute("active");
-				document.getElementById("toggleAutoRecord").innerHTML = 'Turn On Auto Record';
-			}
-		});
-	});
+	})
+	nodecg.readReplicant('autoRecord', value => {
+		if (value) {
+			document.getElementById("toggleAutoRecord").setAttribute("active", true);
+			document.getElementById("toggleAutoRecord").innerHTML = 'Turn Off Auto Record';
+		}
+		else {
+			document.getElementById("toggleAutoRecord").removeAttribute("active");
+			document.getElementById("toggleAutoRecord").innerHTML = 'Turn On Auto Record';
+		}
+	})
 }
 
 function enableButton(element) {
@@ -89,41 +108,47 @@ function validatePassword() {
 	}
 }
 
-function toggleStream() {
-	if (document.getElementById("toggleStream").hasAttribute("active")) {
-		nodecg.sendMessage('obsRequest', { request: 'StopStreaming' });
-		document.getElementById("toggleStream").setAttribute("disabled", true)
-	}
-	else {
-		nodecg.sendMessage('obsRequest', { request: 'StartStreaming' });
-		document.getElementById("toggleStream").setAttribute("disabled", true)
-	}
+async function toggleStream() {
+	getStreamingStatus(function(streamStatus) {
+		if (streamStatus) {
+			nodecg.sendMessage('obsRequest', { request: 'StopStreaming' });
+			document.getElementById("toggleStream").setAttribute("disabled", true)
+		}
+		else {
+			nodecg.sendMessage('obsRequest', { request: 'StartStreaming' });
+			document.getElementById("toggleStream").setAttribute("disabled", true)
+		}
+	});
 }
 
-function toggleRecording() {
-	if (document.getElementById("toggleRecording").hasAttribute("active")) {
-		nodecg.sendMessage('obsRequest', { request: 'StopRecording' });
-		document.getElementById("toggleRecording").setAttribute("disabled", true)
-	}
-	else {
-		nodecg.sendMessage('obsRequest', { request: 'StartRecording' });
-		document.getElementById("toggleRecording").setAttribute("disabled", true)
-	}
+async function toggleRecording() {
+	getRecordingStatus(function(recordingStatus) {
+		console.log('test');
+		if (recordingStatus) {
+			nodecg.sendMessage('obsRequest', { request: 'StopRecording' });
+			document.getElementById("toggleRecording").setAttribute("disabled", true)
+		}
+		else {
+			nodecg.sendMessage('obsRequest', { request: 'StartRecording' });
+			document.getElementById("toggleRecording").setAttribute("disabled", true)
+		}
+	});
 }
 
 function toggleAutoRecord() {
-	if (document.getElementById("toggleAutoRecord").hasAttribute("active")) {
-		document.getElementById("toggleAutoRecord").innerHTML = "Turn On Auto Record";
-		nodecg.sendMessage("setAutoRecord", false, (error, result) => {
+	let autoRecord = nodecg.Replicant('autoRecord');
+	NodeCG.waitForReplicants(autoRecord).then(() => {
+		if (autoRecord.value) {
+			document.getElementById("toggleAutoRecord").innerHTML = "Turn On Auto Record";
+			autoRecord.value = false;
 			document.getElementById("toggleAutoRecord").removeAttribute("active");
-		});
-	}
-	else {
-		document.getElementById("toggleAutoRecord").innerHTML = "Turn Off Auto Record";
-		nodecg.sendMessage("setAutoRecord", true, (error, result) => {
+		}
+		else {
+			document.getElementById("toggleAutoRecord").innerHTML = "Turn Off Auto Record";
+			autoRecord.value = true;
 			document.getElementById("toggleAutoRecord").setAttribute("active", true);
-		});
-	}
+		}
+	});
 }
 
 function reauthenticate() {
