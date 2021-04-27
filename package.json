@@ -40,11 +40,11 @@
         "file": "advanced-settings.html",
         "dialog": true
       },
-	  {
+      {
         "name": "Crop Streams",
         "title": "Crop Streams",
         "file": "scene-crop.html",
-		"fullbleed": true
+        "fullbleed": true
       }
     ]
   },
