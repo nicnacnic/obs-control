@@ -1,171 +1,237 @@
 {
-	"definitions": {},
-	"$schema": "http://json-schema.org/draft-07/schema#", 
-	"$id": "https://example.com/object1617713959.json", 
-	"title": "Root", 
-	"type": "object",
-	"required": [
-		"autoRecord",
-		"useRTMP",
-		"RTMPServerURL",
-		"settingsPassword",
-		"speedcontrol",
-		"obsWebsocket",
-		"twitchSource",
-		"RTMPSource"
-	],
-	"properties": {
-		"autoRecord": {
-			"$id": "#root/autoRecord", 
-			"title": "Autorecord", 
-			"type": "boolean",
-			"examples": [
-				false
-			],
-			"default": false
-		},
-		"useRTMP": {
-			"$id": "#root/useRTMP", 
-			"title": "Usertmp", 
-			"type": "boolean",
-			"examples": [
-				false
-			],
-			"default": false
-		},
-		"RTMPServerURL": {
-			"$id": "#root/RTMPServerURL", 
-			"title": "Rtmpserverurl", 
-			"type": "string",
-			"default": "rtmp://rtmp.example.com/live",
-			"examples": [
-				"rtmp://rtmp.example.com/live"
-			],
-			"pattern": "^.*$"
-		},
-		"settingsPassword": {
-			"$id": "#root/settingsPassword", 
-			"title": "Settingspassword", 
-			"type": "string",
-			"default": "password",
-			"examples": [
-				"password"
-			],
-			"pattern": "^.*$"
-		},
-		"speedcontrol": {
-			"$id": "#root/speedcontrol", 
-			"title": "Speedcontrol", 
-			"type": "object",
-			"required": [
-				"useSpeedcontrolData",
-				"setRunnerStream",
-				"setLayout"
-			],
-			"properties": {
-				"useSpeedcontrolData": {
-					"$id": "#root/speedcontrol/useSpeedcontrolData", 
-					"title": "Usespeedcontroldata", 
-					"type": "boolean",
-					"examples": [
-						true
-					],
-					"default": false
-				},
-				"setRunnerStream": {
-					"$id": "#root/speedcontrol/setRunnerStream", 
-					"title": "Setrunnerstream", 
-					"type": "boolean",
-					"examples": [
-						true
-					],
-					"default": false
-				},
-				"setLayout": {
-					"$id": "#root/speedcontrol/setLayout", 
-					"title": "Setlayout", 
-					"type": "boolean",
-					"examples": [
-						true
-					],
-					"default": false
-				}
-			}
-		}
-,
-		"obsWebsocket": {
-			"$id": "#root/obsWebsocket", 
-			"title": "Obswebsocket", 
-			"type": "object",
-			"required": [
-				"address",
-				"password",
-				"previewRefresh"
-			],
-			"properties": {
-				"address": {
-					"$id": "#root/obsWebsocket/address", 
-					"title": "Address", 
-					"type": "string",
-					"default": "localhost:4444",
-					"examples": [
-						"localhost:4444"
-					],
-					"pattern": "^.*$"
-				},
-				"password": {
-					"$id": "#root/obsWebsocket/password", 
-					"title": "Password", 
-					"type": "string",
-					"default": "password",
-					"examples": [
-						"password"
-					],
-					"pattern": "^.*$"
-				},
-				"previewRefresh": {
-					"$id": "#root/obsWebsocket/previewRefresh", 
-					"title": "Previewrefresh", 
-					"type": "integer",
-					"examples": [
-						1000
-					],
-					"default": 1000
-				}
-			}
-		}
-,
-		"twitchSource": {
-			"$id": "#root/twitchSource", 
-			"title": "Twitchsource", 
-			"type": "array",
-			"default": [],
-			"items":{
-				"$id": "#root/twitchSource/items", 
-				"title": "Items", 
-				"type": "string",
-				"default": ["P1 Browser", "P2 Browser", "P3 Browser", "P4 Browser"],
-				"examples": [
-					"P1 Browser"
-				],
-				"pattern": "^.*$"
-			}
-		},
-		"RTMPSource": {
-			"$id": "#root/RTMPSource", 
-			"title": "Rtmpsource", 
-			"type": "array",
-			"default": [],
-			"items":{
-				"$id": "#root/RTMPSource/items", 
-				"title": "Items", 
-				"type": "string",
-				"default": ["P1 Browser", "P2 Browser", "P3 Browser", "P4 Browser"],
-				"examples": [
-					"P1 Browser"
-				],
-				"pattern": "^.*$"
-			}
-		}
-	}
+    "$id": "http://example.com/example.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "default": {
+        "autoRecord": false,
+        "useRTMP": false,
+        "RTMPServerURL": "rtmp://rtmp.example.com/live",
+        "settingsPassword": "password",
+        "speedcontrol": {
+            "useSpeedcontrolData": false,
+            "setRunnerStream": false,
+            "setLayout": false
+        },
+        "obsWebsocket": {
+            "address": " localhost:4444",
+            "password": "password",
+            "previewRefresh": 1000
+        },
+        "mediaAudioSources": [
+            "VLC Player",
+            "Twitch Stream",
+            "Music"
+        ]
+    },
+    "description": "The root schema comprises the entire JSON document.",
+    "examples": [
+        {
+            "autoRecord": false,
+            "useRTMP": false,
+            "RTMPServerURL": "rtmp://rtmp.example.com/live",
+            "settingsPassword": "password",
+            "speedcontrol": {
+                "useSpeedcontrolData": false,
+                "setRunnerStream": false,
+                "setLayout": false
+            },
+            "obsWebsocket": {
+                "address": " localhost:4444",
+                "password": "password",
+                "previewRefresh": 1000
+            },
+            "mediaAudioSources": [
+                "VLC Player",
+                "Twitch Stream",
+                "Music"
+            ]
+        }
+    ],
+    "required": [
+        "autoRecord",
+        "useRTMP",
+        "RTMPServerURL",
+        "settingsPassword",
+        "speedcontrol",
+        "obsWebsocket",
+        "mediaAudioSources"
+    ],
+    "title": "The root schema",
+    "type": "object",
+    "properties": {
+        "autoRecord": {
+            "$id": "#/properties/autoRecord",
+            "type": "boolean",
+            "title": "The autoRecord schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                false
+            ]
+        },
+        "useRTMP": {
+            "$id": "#/properties/useRTMP",
+            "type": "boolean",
+            "title": "The useRTMP schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                false
+            ]
+        },
+        "RTMPServerURL": {
+            "$id": "#/properties/RTMPServerURL",
+            "type": "string",
+            "title": "The RTMPServerURL schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "rtmp://rtmp.example.com/live"
+            ]
+        },
+        "settingsPassword": {
+            "$id": "#/properties/settingsPassword",
+            "type": "string",
+            "title": "The settingsPassword schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "password"
+            ]
+        },
+        "speedcontrol": {
+            "$id": "#/properties/speedcontrol",
+            "type": "object",
+            "title": "The speedcontrol schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "useSpeedcontrolData": false,
+                    "setRunnerStream": false,
+                    "setLayout": false
+                }
+            ],
+            "required": [
+                "useSpeedcontrolData",
+                "setRunnerStream",
+                "setLayout"
+            ],
+            "properties": {
+                "useSpeedcontrolData": {
+                    "$id": "#/properties/speedcontrol/properties/useSpeedcontrolData",
+                    "type": "boolean",
+                    "title": "The useSpeedcontrolData schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": false,
+                    "examples": [
+                        false
+                    ]
+                },
+                "setRunnerStream": {
+                    "$id": "#/properties/speedcontrol/properties/setRunnerStream",
+                    "type": "boolean",
+                    "title": "The setRunnerStream schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": false,
+                    "examples": [
+                        false
+                    ]
+                },
+                "setLayout": {
+                    "$id": "#/properties/speedcontrol/properties/setLayout",
+                    "type": "boolean",
+                    "title": "The setLayout schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": false,
+                    "examples": [
+                        false
+                    ]
+                }
+            },
+            "additionalProperties": true
+        },
+        "obsWebsocket": {
+            "$id": "#/properties/obsWebsocket",
+            "type": "object",
+            "title": "The obsWebsocket schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "address": " localhost:4444",
+                    "password": "password",
+                    "previewRefresh": 1000
+                }
+            ],
+            "required": [
+                "address",
+                "password",
+                "previewRefresh"
+            ],
+            "properties": {
+                "address": {
+                    "$id": "#/properties/obsWebsocket/properties/address",
+                    "type": "string",
+                    "title": "The address schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        " localhost:4444"
+                    ]
+                },
+                "password": {
+                    "$id": "#/properties/obsWebsocket/properties/password",
+                    "type": "string",
+                    "title": "The password schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "password"
+                    ]
+                },
+                "previewRefresh": {
+                    "$id": "#/properties/obsWebsocket/properties/previewRefresh",
+                    "type": "integer",
+                    "title": "The previewRefresh schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 0,
+                    "examples": [
+                        1000
+                    ]
+                }
+            },
+            "additionalProperties": true
+        },
+        "mediaAudioSources": {
+            "$id": "#/properties/mediaAudioSources",
+            "type": "array",
+            "title": "The mediaAudioSources schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": [],
+            "examples": [
+                [
+                    "VLC Player",
+                    "Twitch Stream"
+                ]
+            ],
+            "additionalItems": true,
+            "items": {
+                "$id": "#/properties/mediaAudioSources/items",
+                "anyOf": [
+                    {
+                        "$id": "#/properties/mediaAudioSources/items/anyOf/0",
+                        "type": "string",
+                        "title": "The first anyOf schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "VLC Player",
+                            "Twitch Stream"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "additionalProperties": true
 }
