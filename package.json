@@ -1,6 +1,6 @@
 {
   "name": "obs-control",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "A NodeCG bundle to control an instance of OBS.",
   "homepage": "https://github.com/nicnacnic/obs-control",
   "author": "nicnacnic",
