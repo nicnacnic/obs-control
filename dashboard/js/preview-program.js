@@ -4,7 +4,7 @@ let previewScene;
 let autoRecord;
 
 window.addEventListener('load', function() {
-
+	
 	nodecg.sendMessage('obsRequest', {
 		request: 'GetPreviewScene',
 	}, (error, result) => {

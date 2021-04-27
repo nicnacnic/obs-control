@@ -4,22 +4,17 @@ let audioSourceList = [];
 window.addEventListener('load', function() {
 
 	const main = document.getElementById("main");
-
+	
 	let inputSources = [];
-	let browserSources = [];
+	let mediaSources = [];
 	nodecg.sendMessage('obsRequest', {
 		request: 'GetSourcesList',
 	}, (error, result) => {
 		for (let i = 0; i < result.sources.length; i++) {
-			if (nodecg.bundleConfig.useRTMP) {
-
-			}
-			else {
-				if (result.sources[i].typeId.includes('wasapi'))
+				if (result.sources[i].typeId.includes('wasapi') || result.sources[i].typeId.includes('pulse_input_capture') || result.sources[i].typeId.includes('pulse_output_capture'))
 					inputSources.push(result.sources[i]);
-				else if (nodecg.bundleConfig.twitchSource.includes(result.sources[i].name))
-					browserSources.push(result.sources[i]);
-			}
+				else if (nodecg.bundleConfig.mediaAudioSources.includes(result.sources[i].name))
+					mediaSources.push(result.sources[i]);
 		}
 		inputSources.sort(function(a, b) {
 			var textA = a.name.toUpperCase();
@@ -32,9 +27,15 @@ window.addEventListener('load', function() {
 			var textB = b.name.toUpperCase();
 			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
 		});
+		
+		mediaSources.sort(function(a, b) {
+			var textA = a.name.toUpperCase();
+			var textB = b.name.toUpperCase();
+			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+		});
 
 		Array.prototype.push.apply(audioSourceList, browserSources);
-		Array.prototype.push.apply(audioSourceList, inputSources)
+		Array.prototype.push.apply(audioSourceList, mediaSources);
 
 		for (let i = 0; i < audioSourceList.length; i++) {
 			let displayVolume, percentVolume, muted;

@@ -12,26 +12,17 @@ window.addEventListener('load', function() {
 		setSource();
 	});
 
-	const dropdownContent = document.getElementById("sourceList");
-	if (nodecg.bundleConfig.useRTMP) {
-		for (let i = 0; i < 4; i++) {
-			let paperItem = document.createElement("paper-item");
-			paperItem.setAttribute("role", "option");
-			paperItem.innerHTML = nodecg.bundleConfig.RTMPSource[i];
-			dropdownContent.appendChild(paperItem);
-		}
-	}
-	else {
+	nodecg.sendMessage('obsRequest', {
+		request: 'GetSourcesList',
+	}, (error, result) => {
 		const dropdownContent = document.getElementById("sourceList");
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < result.sources.length; i++) {
 			let paperItem = document.createElement("paper-item");
-			paperItem.setAttribute("role", "option");
-			paperItem.innerHTML = nodecg.bundleConfig.twitchSource[i];
+			paperItem.innerHTML = result.sources[i].name;
 			dropdownContent.appendChild(paperItem);
 		}
-	}
-
-	dropdownContent.setAttribute('selected', 0);
+		dropdownContent.setAttribute('selected', 0)
+	});
 
 	window.setInterval(takePreviewScreenshot, nodecg.bundleConfig.obsWebsocket.previewRefresh);
 
@@ -40,7 +31,7 @@ window.addEventListener('load', function() {
 			previewScene = value.sceneName;
 			setSource();
 		}
-	});
+	})
 });
 
 function setSource() {
@@ -140,7 +131,7 @@ function setScale() {
 
 
 function reset() {
-		nodecg.sendMessage('obsRequest', {
+	nodecg.sendMessage('obsRequest', {
 		request: 'SetSceneItemProperties',
 		args: {
 			"scene-name": previewScene,
