@@ -11,7 +11,7 @@ window.addEventListener('load', function() {
 		request: 'GetSourcesList',
 	}, (error, result) => {
 		for (let i = 0; i < result.sources.length; i++) {
-				if (result.sources[i].typeId.includes('wasapi') || result.sources[i].typeId.includes('pulse_input_capture') || result.sources[i].typeId.includes('pulse_output_capture'))
+				if (result.sources[i].typeId === ('wasapi_input_capture' || 'wasapi_output_capture' || 'pulse_input_capture' || 'pulse_output_capture'))
 					inputSources.push(result.sources[i]);
 				else if (nodecg.bundleConfig.mediaAudioSources.includes(result.sources[i].name))
 					mediaSources.push(result.sources[i]);
@@ -29,6 +29,7 @@ window.addEventListener('load', function() {
 		});
 		
 		Array.prototype.push.apply(audioSourceList, mediaSources);
+		Array.prototype.push.apply(audioSourceList, inputSources);
 
 		for (let i = 0; i < audioSourceList.length; i++) {
 			let displayVolume, percentVolume, muted;
