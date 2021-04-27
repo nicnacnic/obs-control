@@ -50,6 +50,9 @@ Bugs or glitches should first be checked against the list of [known bugs](https:
 
 If you're having issues or just want to chat, I can be reached on my [Discord](https://discord.gg/A34Qpfe) server.
 
+## Special Thanks
+Zoton2, TBSilver, and everyone else on the NodeCG Discord server for helping me solve many many issues.
+
 ## License
 MIT  License
 
