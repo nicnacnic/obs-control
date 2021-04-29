@@ -41,7 +41,7 @@ Commission work is available! If you don't have any coding experience, or simply
 
 ## Other Bundles
 - [speedcontrol-layouts](https://github.com/nicnacnic/speedcontrol-layouts) A pack of simple yet easily customizable layouts, works very well with this bundle!
-- [tweetr](https://github.com/nicnacnic/speedcontrol-tweetr) Control Twitter right from your NodeCG dashboard!
+- [speedcontrol-tweetr](https://github.com/nicnacnic/speedcontrol-tweetr) Control Twitter right from your NodeCG dashboard!
 
 ## Contributing
 There is a lot of inefficient code in this bundle. If you can optimize the code, or add new features, submit a pull request! Before you do, please make sure to **test your code**.
@@ -51,7 +51,7 @@ Bugs or glitches should first be checked against the list of [known bugs](https:
 If you're having issues or just want to chat, I can be reached on my [Discord](https://discord.gg/A34Qpfe) server.
 
 ## Special Thanks
-Zoton2, TBSilver, and everyone else on the NodeCG Discord server for helping me solve many many issues.
+Zoton2, TBSilver, and everyone else on the NodeCG Discord server for helping me solve my many many issues.
 
 ## License
 MIT  License
