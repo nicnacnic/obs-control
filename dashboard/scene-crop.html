@@ -18,7 +18,7 @@
 			<div id="sourceSelect">
 				<paper-dropdown-menu class="scenes" label="Source" vertical-offset="60">
 					<paper-listbox slot="dropdown-content" class="dropdown-content" id="sourceList"
-						onClick="setSource()">
+						onClick="setSource(this.selectedItem.innerHTML)">
 					</paper-listbox>
 				</paper-dropdown-menu>
 				<div id="generalOptions">

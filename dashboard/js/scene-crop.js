@@ -1,173 +1,85 @@
-'use strict';
-
-let previewScene;
-let itemProperties = [];
+const currentScene = nodecg.Replicant('currentScene');
+const currentCrop = nodecg.Replicant('currentCrop');
+const cropItems = nodecg.Replicant('cropItems');
+const previewProgram = nodecg.Replicant('previewProgram');
+let selectedSource;
 
 window.addEventListener('load', function() {
-	
-	nodecg.sendMessage('obsRequest', {
-		request: 'GetPreviewScene',
-	}, (error, result) => {
-		previewScene = result.name;
-		setSource();
-	});
 
-	nodecg.sendMessage('obsRequest', {
-		request: 'GetSourcesList',
-	}, (error, result) => {
-		const dropdownContent = document.getElementById("sourceList");
-		for (let i = 0; i < result.sources.length; i++) {
-			if (result.sources[i].type === 'input' && !result.sources[i].typeId.includes("input") && !result.sources[i].typeId.includes("output")) {
+	NodeCG.waitForReplicants(currentScene, currentCrop, cropItems, previewProgram).then(() => {
+
+		previewProgram.on('change', (newVal, oldVal) => document.getElementById("previewImg").src = newVal.preview);
+
+		cropItems.on('change', (newVal, oldVal) => {
+			let dropdownContent = document.getElementById("sourceList");
+			dropdownContent.innerHTML = '';
+			for (let i = 0; i < newVal.length; i++) {
 				let paperItem = document.createElement("paper-item");
-				paperItem.innerHTML = result.sources[i].name;
+				paperItem.innerHTML = newVal[i];
 				dropdownContent.appendChild(paperItem);
 			}
-		}
-		dropdownContent.setAttribute('selected', 0)
-	});
+			dropdownContent.setAttribute('selected', 0);
+			if (newVal !== '')
+				nodecg.sendMessage('getCrop', newVal[0])
+		})
 
-	window.setInterval(takePreviewScreenshot, nodecg.bundleConfig.obsWebsocket.previewRefresh);
-
-		nodecg.listenFor('obsEvent', (value, ack) => {
-			if (value.updateType === 'PreviewSceneChanged') {
-				previewScene = value.sceneName;
-				setSource();
+		currentCrop.on('change', (newVal, oldVal) => {
+			if (newVal !== undefined) {
+				document.getElementById("topCrop").value = newVal.crop.top;
+				document.getElementById("leftCrop").value = newVal.crop.left;
+				document.getElementById("rightCrop").value = newVal.crop.right;
+				document.getElementById("bottomCrop").value = newVal.crop.bottom;
+				document.getElementById("positionX").value = newVal.position.x;
+				document.getElementById("positionY").value = newVal.position.y;
+				document.getElementById("scaleWidth").value = newVal.scale.x.toFixed(3);
+				document.getElementById("scaleHeight").value = newVal.scale.y.toFixed(3);
 			}
 		})
+	});
 });
 
-function setSource() {
-	nodecg.sendMessage('obsRequest', {
-		request: 'GetSceneItemProperties',
-		args: {
-			"scene-name": previewScene,
-			"item": document.getElementById('sourceList').selectedItem.innerHTML,
-		}
-	}, (error, result) => {
-		itemProperties = [];
-		document.getElementById("topCrop").value = result.crop.top;
-		document.getElementById("leftCrop").value = result.crop.left;
-		document.getElementById("rightCrop").value = result.crop.right;
-		document.getElementById("bottomCrop").value = result.crop.bottom;
-		document.getElementById("positionX").value = result.position.x;
-		document.getElementById("positionY").value = result.position.y;
-		document.getElementById("scaleWidth").value = result.scale.x.toFixed(3);
-		document.getElementById("scaleHeight").value = result.scale.y.toFixed(3);
-		itemProperties = result;
-	});
-}
-
-function takePreviewScreenshot() {
-	nodecg.sendMessage('obsRequest', {
-		request: 'TakeSourceScreenshot',
-		args: {
-			sourceName: previewScene,
-			embedPictureFormat: 'png',
-			width: 720,
-			height: 405,
-		}
-	}, (error, result) => {
-		document.getElementById("previewImg").src = result.img;
-	})
+function setSource(source) {
+	nodecg.sendMessage('getCrop', source)
 }
 
 function setCrop() {
-	itemProperties.crop.top = document.getElementById("topCrop").value;
-	itemProperties.crop.left = document.getElementById("leftCrop").value;
-	itemProperties.crop.right = document.getElementById("rightCrop").value;
-	itemProperties.crop.bottom = document.getElementById("bottomCrop").value;
-	itemProperties.position.x = document.getElementById("leftCrop").value;
-	itemProperties.position.y = document.getElementById("topCrop").value;
-	nodecg.sendMessage('obsRequest', {
-		request: 'SetSceneItemProperties',
-		args: {
-			"scene-name": previewScene,
-			item: document.getElementById('sourceList').selectedItem.innerHTML,
-			crop: {
-				top: parseFloat(itemProperties.crop.top),
-				left: parseFloat(itemProperties.crop.left),
-				right: parseFloat(itemProperties.crop.right),
-				bottom: parseFloat(itemProperties.crop.bottom),
-			},
-			position: {
-				x: parseFloat(itemProperties.position.x),
-				y: parseFloat(itemProperties.position.y),
-			},
-		},
-	});
-	document.getElementById("positionX").value = itemProperties.position.x;
-	document.getElementById("positionY").value = itemProperties.position.y;
+	let properties = currentCrop.value;
+	properties.crop.top = parseFloat(document.getElementById("topCrop").value);
+	properties.crop.left = parseFloat(document.getElementById("leftCrop").value);
+	properties.crop.right = parseFloat(document.getElementById("rightCrop").value);
+	properties.crop.bottom = parseFloat(document.getElementById("bottomCrop").value);
+
+	if (properties.crop.left !== document.getElementById("leftCrop").value)
+		properties.position.x = parseFloat(document.getElementById("leftCrop").value);
+	if (properties.crop.top !== document.getElementById("topCrop").value)
+		properties.position.y = parseFloat(document.getElementById("topCrop").value);
+	currentCrop.value = properties;
 }
 
 function setPosition() {
-	itemProperties.position.x = document.getElementById("positionX").value;
-	itemProperties.position.y = document.getElementById("positionY").value;
-	nodecg.sendMessage('obsRequest', {
-		request: 'SetSceneItemProperties',
-		args: {
-			"scene-name": previewScene,
-			item: document.getElementById('sourceList').selectedItem.innerHTML,
-			position: {
-				x: parseFloat(itemProperties.position.x),
-				y: parseFloat(itemProperties.position.y),
-			},
-		},
-	});
+	let properties = currentCrop.value;
+	properties.position.x = parseFloat(document.getElementById("positionX").value);
+	properties.position.y = parseFloat(document.getElementById("positionY").value);
+	currentCrop.value = properties;
 }
 
 function setScale() {
-	itemProperties.scale.x = document.getElementById("scaleWidth").value;
-	itemProperties.scale.y = document.getElementById("scaleHeight").value;
-	nodecg.sendMessage('obsRequest', {
-		request: 'SetSceneItemProperties',
-		args: {
-			"scene-name": previewScene,
-			item: document.getElementById('sourceList').selectedItem.innerHTML,
-			scale: {
-				x: parseFloat(itemProperties.scale.x),
-				y: parseFloat(itemProperties.scale.y),
-			},
-		},
-	});
+	let properties = currentCrop.value;
+	properties.scale.x = parseFloat(document.getElementById("scaleWidth").value);
+	properties.scale.y = parseFloat(document.getElementById("scaleHeight").value);
+	currentCrop.value = properties;
 }
 
 
 function reset() {
-	nodecg.sendMessage('obsRequest', {
-		request: 'SetSceneItemProperties',
-		args: {
-			"scene-name": previewScene,
-			item: document.getElementById('sourceList').selectedItem.innerHTML,
-			crop: {
-				top: 0,
-				left: 0,
-				right: 0,
-				bottom: 0,
-			},
-			position: {
-				x: 0,
-				y: 0,
-			},
-			scale: {
-				x: 1,
-				y: 1,
-			},
-		},
-	});
-	itemProperties.crop.top = 0;
-	itemProperties.crop.left = 0;
-	itemProperties.crop.right = 0;
-	itemProperties.crop.bottom = 0;
-	itemProperties.position.x = 0;
-	itemProperties.position.y = 0;
-	itemProperties.scale.x = 1;
-	itemProperties.scale.y = 1;
-	document.getElementById("topCrop").value = itemProperties.crop.top;
-	document.getElementById("leftCrop").value = itemProperties.crop.left;
-	document.getElementById("rightCrop").value = itemProperties.crop.right;
-	document.getElementById("bottomCrop").value = itemProperties.crop.bottom;
-	document.getElementById("positionX").value = itemProperties.position.x;
-	document.getElementById("positionY").value = itemProperties.position.y;
-	document.getElementById("scaleWidth").value = itemProperties.scale.x.toFixed(3);
-	document.getElementById("scaleHeight").value = itemProperties.scale.y.toFixed(3);
+	let properties = currentCrop.value;
+	properties.crop.top = 0;
+	properties.crop.left = 0;
+	properties.crop.right = 0;
+	properties.crop.bottom = 0;
+	properties.position.x = 0;
+	properties.position.y = 0;
+	properties.scale.x = 1;
+	properties.scale.y = 1;
+	currentCrop.value = properties;
 }

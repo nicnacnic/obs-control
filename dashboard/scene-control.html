@@ -16,32 +16,32 @@
 		<div id="scene">
 			<paper-dropdown-menu class="scenes" label="Scene" vertical-offset="60">
 				<paper-listbox slot="dropdown-content" class="dropdown-content" id="sceneList"
-					onClick="changeScene('', false)">
+					onClick="changeScene(this)">
 				</paper-listbox>
 			</paper-dropdown-menu>
 		</div>
 		<div id="runnerInfo">
 			<div id="inputLeft" style="overflow:hidden">
 				<div id="input1">
-					<paper-input class="input" id="0" label="Player 1"></paper-input>
+					<paper-input class="input" id="input0" label="Player 1"></paper-input>
 				</div>
 				<div id="input3">
-					<paper-input class="input" id="2" label="Player 3"></paper-input>
+					<paper-input class="input" id="input2" label="Player 3"></paper-input>
 				</div>
 			</div>
 			<div id="inputRight" style="overflow:hidden">
-				<div id="input3">
-					<paper-input class="input" id="1" label="Player 2"></paper-input>
+				<div id="input2">
+					<paper-input class="input" id="input1" label="Player 2"></paper-input>
 				</div>
 				<div id="input4">
-					<paper-input class="input" id="3" label="Player 4"></paper-input>
+					<paper-input class="input" id="input3" label="Player 4"></paper-input>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div id="quality">
 		<paper-dropdown-menu class="scenes" label="Quality" vertical-offset="-150">
-			<paper-listbox slot="dropdown-content" class="dropdown-content" id="qualityList">
+			<paper-listbox slot="dropdown-content" class="dropdown-content" id="qualityList" onClick="updateQuality(this)">
 				<paper-item>Auto</paper-item>
 				<paper-item>Source</paper-item>
 				<paper-item>720p60</paper-item>

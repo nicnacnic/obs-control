@@ -2,145 +2,132 @@
     "$id": "http://example.com/example.json",
     "$schema": "http://json-schema.org/draft-07/schema",
     "default": {
-        "useRTMP": false,
-        "RTMPServerURL": "rtmp://rtmp.example.com/live",
-        "settingsPassword": "password",
-        "speedcontrol": {
-            "useSpeedcontrolData": false,
-            "setRunnerStream": false,
-            "setLayout": false
+        "general": {
+            "useRTMP": false,
+            "RTMPServerURL": "rtmp://rtmp.example.com/live",
+            "settingsPassword": "password",
+            "speedcontrolSetRunner": false,
+            "speedcontrolSetLayout": false
         },
         "obsWebsocket": {
             "address": "localhost:4444",
             "password": "password",
             "previewRefresh": 1000
         },
-        "playerFeeds": [
-            "P1 Browser",
-            "P2 Browser",
-            "P3 Browser",
-            "P4 Browser"
-        ],
-        "audioSources": [
-            "Media",
-            "Music Player",
-            "VLC Video"
-        ]
+        "scenes": {
+            "intermission": "Intermission"
+        },
+        "sources": {
+            "player": [
+                "P1 Browser",
+                "P2 RTMP Feed"
+            ]
+        }
     },
     "description": "The root schema comprises the entire JSON document.",
     "examples": [
         {
-            "useRTMP": false,
-            "RTMPServerURL": "rtmp://rtmp.example.com/live",
-            "settingsPassword": "password",
-            "speedcontrol": {
-                "useSpeedcontrolData": false,
-                "setRunnerStream": false,
-                "setLayout": false
+            "general": {
+                "useRTMP": false,
+                "RTMPServerURL": "rtmp://rtmp.example.com/live",
+                "settingsPassword": "password",
+                "speedcontrolSetRunner": true,
+                "speedcontrolSetLayout": false
             },
             "obsWebsocket": {
                 "address": "localhost:4444",
                 "password": "password",
-                "previewRefresh": 1000
+                "previewRefresh": 200
             },
-            "playerFeeds": [
-                "P1 Browser",
-                "P2 Browser",
-                "P3 Browser",
-                "P4 Browser"
-            ],
-            "audioSources": [
-                "Media",
-                "Music Player",
-                "VLC Video"
-            ]
+            "scenes": {
+                "intermission": "Intermission"
+            },
+            "sources": {
+                "player": [
+                    "P1 Browser",
+                    "P2 Browser",
+                    "P3 Browser",
+                    "P4 Browser"
+                ]
+            }
         }
     ],
     "required": [
-        "useRTMP",
-        "RTMPServerURL",
-        "settingsPassword",
-        "speedcontrol",
+        "general",
         "obsWebsocket",
-        "playerFeeds",
-        "audioSources"
+        "scenes",
+        "sources"
     ],
     "title": "The root schema",
     "type": "object",
     "properties": {
-        "useRTMP": {
-            "$id": "#/properties/useRTMP",
-            "type": "boolean",
-            "title": "The useRTMP schema",
-            "description": "An explanation about the purpose of this instance.",
-            "default": false,
-            "examples": [
-                false
-            ]
-        },
-        "RTMPServerURL": {
-            "$id": "#/properties/RTMPServerURL",
-            "type": "string",
-            "title": "The RTMPServerURL schema",
-            "description": "An explanation about the purpose of this instance.",
-            "default": "",
-            "examples": [
-                "rtmp://rtmp.example.com/live"
-            ]
-        },
-        "settingsPassword": {
-            "$id": "#/properties/settingsPassword",
-            "type": "string",
-            "title": "The settingsPassword schema",
-            "description": "An explanation about the purpose of this instance.",
-            "default": "",
-            "examples": [
-                "password"
-            ]
-        },
-        "speedcontrol": {
-            "$id": "#/properties/speedcontrol",
+        "general": {
+            "$id": "#/properties/general",
             "type": "object",
-            "title": "The speedcontrol schema",
+            "title": "The general schema",
             "description": "An explanation about the purpose of this instance.",
             "default": {},
             "examples": [
                 {
-                    "useSpeedcontrolData": false,
-                    "setRunnerStream": false,
-                    "setLayout": false
+                    "useRTMP": false,
+                    "RTMPServerURL": "rtmp://rtmp.example.com/live",
+                    "settingsPassword": "password",
+                    "speedcontrolSetRunner": true,
+                    "speedcontrolSetLayout": false
                 }
             ],
             "required": [
-                "useSpeedcontrolData",
-                "setRunnerStream",
-                "setLayout"
+                "useRTMP",
+                "RTMPServerURL",
+                "settingsPassword",
+                "speedcontrolSetRunner",
+                "speedcontrolSetLayout"
             ],
             "properties": {
-                "useSpeedcontrolData": {
-                    "$id": "#/properties/speedcontrol/properties/useSpeedcontrolData",
+                "useRTMP": {
+                    "$id": "#/properties/general/properties/useRTMP",
                     "type": "boolean",
-                    "title": "The useSpeedcontrolData schema",
+                    "title": "The useRTMP schema",
                     "description": "An explanation about the purpose of this instance.",
                     "default": false,
                     "examples": [
                         false
                     ]
                 },
-                "setRunnerStream": {
-                    "$id": "#/properties/speedcontrol/properties/setRunnerStream",
+                "RTMPServerURL": {
+                    "$id": "#/properties/general/properties/RTMPServerURL",
+                    "type": "string",
+                    "title": "The RTMPServerURL schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "rtmp://rtmp.example.com/live"
+                    ]
+                },
+                "settingsPassword": {
+                    "$id": "#/properties/general/properties/settingsPassword",
+                    "type": "string",
+                    "title": "The settingsPassword schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "password"
+                    ]
+                },
+                "speedcontrolSetRunner": {
+                    "$id": "#/properties/general/properties/speedcontrolSetRunner",
                     "type": "boolean",
-                    "title": "The setRunnerStream schema",
+                    "title": "The speedcontrolSetRunner schema",
                     "description": "An explanation about the purpose of this instance.",
                     "default": false,
                     "examples": [
-                        false
+                        true
                     ]
                 },
-                "setLayout": {
-                    "$id": "#/properties/speedcontrol/properties/setLayout",
+                "speedcontrolSetLayout": {
+                    "$id": "#/properties/general/properties/speedcontrolSetLayout",
                     "type": "boolean",
-                    "title": "The setLayout schema",
+                    "title": "The speedcontrolSetLayout schema",
                     "description": "An explanation about the purpose of this instance.",
                     "default": false,
                     "examples": [
@@ -160,7 +147,7 @@
                 {
                     "address": "localhost:4444",
                     "password": "password",
-                    "previewRefresh": 1000
+                    "previewRefresh": 200
                 }
             ],
             "required": [
@@ -196,71 +183,92 @@
                     "description": "An explanation about the purpose of this instance.",
                     "default": 0,
                     "examples": [
-                        1000
+                        200
                     ]
                 }
             },
             "additionalProperties": true
         },
-        "playerFeeds": {
-            "$id": "#/properties/playerFeeds",
-            "type": "array",
-            "title": "The playerFeeds schema",
+        "scenes": {
+            "$id": "#/properties/scenes",
+            "type": "object",
+            "title": "The scenes schema",
             "description": "An explanation about the purpose of this instance.",
-            "default": [],
+            "default": {},
             "examples": [
-                [
-                    "P1 Browser",
-                    "P2 Browser"
-                ]
+                {
+                    "intermission": "Intermission"
+                }
             ],
-            "additionalItems": true,
-            "items": {
-                "$id": "#/properties/playerFeeds/items",
-                "anyOf": [
-                    {
-                        "$id": "#/properties/playerFeeds/items/anyOf/0",
-                        "type": "string",
-                        "title": "The first anyOf schema",
-                        "description": "An explanation about the purpose of this instance.",
-                        "default": "",
-                        "examples": [
+            "required": [
+                "intermission"
+            ],
+            "properties": {
+                "intermission": {
+                    "$id": "#/properties/scenes/properties/intermission",
+                    "type": "string",
+                    "title": "The intermission schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "Intermission"
+                    ]
+                }
+            },
+            "additionalProperties": true
+        },
+        "sources": {
+            "$id": "#/properties/sources",
+            "type": "object",
+            "title": "The sources schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "player": [
+                        "P1 Browser",
+                        "P2 Browser",
+                        "P3 Browser",
+                        "P4 Browser"
+                    ]
+                }
+            ],
+            "required": [
+                "player"
+            ],
+            "properties": {
+                "player": {
+                    "$id": "#/properties/sources/properties/player",
+                    "type": "array",
+                    "title": "The player schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": [],
+                    "examples": [
+                        [
                             "P1 Browser",
                             "P2 Browser"
                         ]
-                    }
-                ]
-            }
-        },
-        "audioSources": {
-            "$id": "#/properties/audioSources",
-            "type": "array",
-            "title": "The audioSources schema",
-            "description": "An explanation about the purpose of this instance.",
-            "default": [],
-            "examples": [
-                [
-                    "Media",
-                    "Music Player"
-                ]
-            ],
-            "additionalItems": true,
-            "items": {
-                "$id": "#/properties/audioSources/items",
-                "anyOf": [
-                    {
-                        "$id": "#/properties/audioSources/items/anyOf/0",
-                        "type": "string",
-                        "title": "The first anyOf schema",
-                        "description": "An explanation about the purpose of this instance.",
-                        "default": "",
-                        "examples": [
-                            "Media",
-                            "Music Player"
+                    ],
+                    "additionalItems": true,
+                    "items": {
+                        "$id": "#/properties/sources/properties/player/items",
+                        "anyOf": [
+                            {
+                                "$id": "#/properties/sources/properties/player/items/anyOf/0",
+                                "type": "string",
+                                "title": "The first anyOf schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": "",
+                                "examples": [
+                                    "P1 Browser",
+                                    "P2 Browser"
+                                ]
+                            }
                         ]
                     }
-                ]
-            }
+                }
+            },
+            "additionalProperties": true
         }
     },
     "additionalProperties": true

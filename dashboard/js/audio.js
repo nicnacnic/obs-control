@@ -1,68 +1,24 @@
-'use strict';
-let audioSourceList = [];
+const audioSources = nodecg.Replicant('audioSources');
 
 window.addEventListener('load', function() {
 
-	const main = document.getElementById("main");
-
-	let inputSources = [];
-	let playerSources = [];
-	let mediaSources = [];
-	nodecg.sendMessage('obsRequest', {
-		request: 'GetSourcesList',
-	}, (error, result) => {
-		for (let i = 0; i < result.sources.length; i++) {
-			if (nodecg.bundleConfig.playerFeeds.includes(result.sources[i].name))
-				playerSources.push(result.sources[i]);
-			else if (nodecg.bundleConfig.audioSources !== undefined && nodecg.bundleConfig.audioSources.includes(result.sources[i].name))
-				mediaSources.push(result.sources[i]);
-			else if (result.sources[i].typeId === 'wasapi_input_capture' || result.sources[i].typeId === 'wasapi_output_capture' || result.sources[i].typeId === 'pulse_input_capture' || result.sources[i].typeId === 'pulse_output_capture')
-				inputSources.push(result.sources[i]);
-		}
-
-		playerSources.sort(function(a, b) {
-			var textA = a.name.toUpperCase();
-			var textB = b.name.toUpperCase();
-			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-		});
-
-		inputSources.sort(function(a, b) {
-			var textA = a.name.toUpperCase();
-			var textB = b.name.toUpperCase();
-			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-		});
-
-		mediaSources.sort(function(a, b) {
-			var textA = a.name.toUpperCase();
-			var textB = b.name.toUpperCase();
-			return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-		});
-
-		Array.prototype.push.apply(audioSourceList, playerSources);
-		Array.prototype.push.apply(audioSourceList, mediaSources);
-		Array.prototype.push.apply(audioSourceList, inputSources);
-
-		for (let i = 0; i < audioSourceList.length; i++) {
-			let displayVolume, percentVolume, muted;
-			nodecg.sendMessage('obsRequest', {
-				request: 'GetVolume',
-				args: {
-					source: audioSourceList[i].name,
-				}
-			}, (error, result) => {
-				displayVolume = mulToDb(result.volume)
+	audioSources.on('change', (newVal, oldVal) => {
+		if (oldVal === undefined || newVal.length !== oldVal.length) {
+			const main = document.getElementById("main");
+			main.innerHTML = '';
+			for (let i = 0; i < newVal.length; i++) {
+				displayVolume = mulToDb(newVal[i].volume)
 				percentVolume = dbToPercent(displayVolume);
-				muted = result.muted;
 
 				let sliderContainer = document.createElement("div");
 				sliderContainer.setAttribute("class", "sliderContainer");
 
 				let label = document.createElement("div");
 				label.setAttribute("class", "label");
-				label.innerHTML = audioSourceList[i].name;
+				label.innerHTML = newVal[i].name;
 
 				let labelValue = document.createElement("span");
-				labelValue.setAttribute("id", "label" + i);
+				labelValue.setAttribute("id", "labl" + newVal[i].name);
 				labelValue.setAttribute("class", "labelValue");
 
 				if (!isFinite(displayVolume))
@@ -74,15 +30,14 @@ window.addEventListener('load', function() {
 				sliderDiv.setAttribute("class", "sliderDiv");
 
 				let muteButton = document.createElement("paper-button");
-				muteButton.setAttribute("id", "mute" + i);
 				muteButton.setAttribute("class", "button");
 
 				let muteButtonIcon = document.createElement("span");
-				muteButtonIcon.setAttribute("id", "button" + i);
+				muteButtonIcon.setAttribute("id", "mute" + newVal[i].name);
 				muteButtonIcon.setAttribute("class", "material-icons");
 				muteButtonIcon.setAttribute("style", "font-size: 24px; vertical-align: middle;");
-				muteButtonIcon.setAttribute("onClick", "toggleMute(this)");
-				if (muted) {
+				muteButtonIcon.setAttribute("onClick", 'toggleMute(\'' + newVal[i].name + '\', this.innerHTML)');
+				if (newVal[i].muted) {
 					muteButtonIcon.innerHTML = "volume_off";
 					muteButtonIcon.style.color = 'red';
 				}
@@ -92,32 +47,24 @@ window.addEventListener('load', function() {
 				};
 
 				let slider = document.createElement("paper-slider");
-				slider.setAttribute("id", "slider" + i);
+				slider.setAttribute("id", "slid" + newVal[i].name);
 				slider.setAttribute("class", "slider");
 				slider.setAttribute("min", "0");
 				slider.setAttribute("max", "100");
 				slider.setAttribute("value", percentVolume);
-				slider.setAttribute("onChange", "changeVolume(this)")
+				slider.setAttribute("onChange", 'changeVolume(\'' + newVal[i].name + '\', this.value)')
 
 				let syncOffsetDiv = document.createElement("div");
-				syncOffsetDiv.setAttribute("id", "syncOffsetDiv" + i);
 				syncOffsetDiv.setAttribute("class", "syncOffsetDiv");
 				syncOffsetDiv.innerHTML = "ms";
 
 				let syncOffset = document.createElement("paper-input");
-				syncOffset.setAttribute("id", "sync" + i);
+				syncOffset.setAttribute("id", "sync" + newVal[i].name);
 				syncOffset.setAttribute("class", "syncOffset");
 				syncOffset.setAttribute("type", "number");
 				syncOffset.setAttribute("no-label-float");
-				syncOffset.setAttribute("onChange", "changeSync(this)");
-				nodecg.sendMessage('obsRequest', {
-					request: 'GetSyncOffset',
-					args: {
-						source: audioSourceList[i].name,
-					}
-				}, (error, result) => {
-					syncOffset.value = (result.offset / 1000000);
-				});
+				syncOffset.setAttribute("onChange", 'changeSync(\'' + newVal[i].name + '\', this.value)');
+				syncOffset.value = (newVal[i].offset / 1000000);
 
 				label.appendChild(labelValue);
 				muteButton.appendChild(muteButtonIcon);
@@ -129,107 +76,55 @@ window.addEventListener('load', function() {
 				sliderContainer.appendChild(sliderDiv);
 
 				main.appendChild(sliderContainer);
-			});
-		}
-	});
-})
-
-function toggleMute(label) {
-	let id = label.id.replace(/\D/g, '');
-	let muteState;
-	if (label.innerHTML === 'volume_off') {
-		label.innerHTML = 'volume_up';
-		label.style.color = 'white';
-		muteState = false;
-	}
-	else {
-		label.innerHTML = 'volume_off';
-		label.style.color = 'red';
-		muteState = true;
-	}
-
-	nodecg.sendMessage('obsRequest', {
-		request: 'SetMute',
-		args: {
-			source: audioSourceList[id].name,
-			mute: muteState,
-		}
-	})
-}
-
-function changeVolume(slider) {
-	let id = slider.id.replace(/\D/g, '')
-
-	let value = percentToMul(slider.value);
-	let displayValue = mulToDb(value);
-
-	nodecg.sendMessage('obsRequest', {
-		request: 'SetVolume',
-		args: {
-			source: audioSourceList[id].name,
-			volume: value,
-		}
-	}, (error, result) => {
-		if (!isFinite(displayValue)) {
-			document.getElementById("label" + id).innerHTML = "-inf dB";
-		}
-		else
-			document.getElementById("label" + id).innerHTML = displayValue + " dB";
-	});
-}
-
-function changeSync(input) {
-	let id = input.id.replace(/\D/g, '')
-	let sync = input.value * 1000000;
-	nodecg.sendMessage('obsRequest', {
-		request: 'SetSyncOffset',
-		args: {
-			source: audioSourceList[id].name,
-			offset: sync,
-		}
-	})
-}
-
-nodecg.listenFor('obsEvent', (value, ack) => {
-	if (value.updateType === 'SourceMuteStateChanged') {
-		let index = findIndex(value.sourceName)
-		if (index !== null) {
-			if (value.muted) {
-				document.getElementById("button" + index).innerHTML = "volume_off";
-				document.getElementById("button" + index).style.color = "red";
-			}
-			else {
-				document.getElementById("button" + index).innerHTML = "volume_up";
-				document.getElementById("button" + index).style.color = "white";
 			}
 		}
-	}
-	else if (value.updateType === 'SourceVolumeChanged') {
-		let index = findIndex(value.sourceName)
-		if (index !== null) {
-			let displayVolume = mulToDb(value.volume);
-			if (!isFinite(displayVolume))
-				document.getElementById("label" + index).innerHTML = "-inf dB";
-			else
-				document.getElementById("label" + index).innerHTML = displayVolume + " dB";
-			document.getElementById("slider" + index).setAttribute("value", dbToPercent(mulToDb(value.volume)));
+		else {
+			for (let i = 0; i < newVal.length; i++) {
+				if (newVal[i].changed) {
+					if (newVal[i].volume !== oldVal[i].volume) {
+						let displayVolume = mulToDb(newVal[i].volume);
+						if (!isFinite(displayVolume))
+							document.getElementById('labl' + newVal[i].name).innerHTML = "-inf dB";
+						else
+							document.getElementById('labl' + newVal[i].name).innerHTML = displayVolume + " dB";
+						document.getElementById('slid' + newVal[i].name).setAttribute("value", dbToPercent(mulToDb(newVal[i].volume)));
+					}
+					else if (newVal[i].muted !== oldVal[i].muted) {
+						if (newVal[i].muted) {
+							document.getElementById('mute' + newVal[i].name).innerHTML = 'volume_off';
+							document.getElementById('mute' + newVal[i].name).style.color = 'red';
+						}
+						else {
+							document.getElementById('mute' + newVal[i].name).innerHTML = 'volume_up';
+							document.getElementById('mute' + newVal[i].name).style.color = 'white';
+						}
+					}
+					else {
+						document.getElementById('sync' + newVal[i].name).setAttribute('value', (newVal[i].offset / 1000000));
+					}
+					newVal[i].changed = false;
+					break;
+				}
+			}
 		}
-	}
-	else if (value.updateType === 'SourceAudioSyncOffsetChanged') {
-		let index = findIndex(value.sourceName)
-		if (index !== null) {
-			document.getElementById("sync" + index).value = (value.syncOffset / 1000000);
-		}
-	}
+	});
 });
 
-function findIndex(source) {
-	for (let i = 0; i < audioSourceList.length; i++) {
-		if (audioSourceList[i].name === source)
-			return i;
-	}
-	return null;
+function toggleMute(name, value) {
+	let muteState;
+	if (value === 'volume_up')
+		muteState = true;
+	else
+		muteState = false;
+	nodecg.sendMessage('setMute', { source: name, mute: muteState })
+}
 
+function changeVolume(name, value) {
+	nodecg.sendMessage('setVolume', { source: name, volume: percentToMul(value.toFixed(1)) })
+}
+
+function changeSync(name, value) {
+	nodecg.sendMessage('setOffset', { source: name, offset: value * 1000000 })
 }
 
 function percentToMul(value) {

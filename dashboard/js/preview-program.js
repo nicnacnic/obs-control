@@ -1,124 +1,45 @@
-'use strict';
-
-let previewScene, autoRecord;
-let emergencyTransitionStatus = false;
+const streamStatus = nodecg.Replicant('streamStatus');
+const previewProgram = nodecg.Replicant('previewProgram');
+const emergencyTransition = nodecg.Replicant('emergencyTransition');
 
 window.addEventListener('load', function() {
 
-	let autoRecordReplicant = nodecg.Replicant('autoRecord');
+	NodeCG.waitForReplicants(streamStatus, previewProgram, emergencyTransition).then(() => {
 
-	NodeCG.waitForReplicants(autoRecordReplicant).then(() => {
-
-		autoRecordReplicant.on('change', (newValue, oldValue) => {
-			autoRecord = newValue;
+		previewProgram.on('change', (newVal, oldVal) => {
+			document.getElementById("previewImg").src = newVal.preview;
+			document.getElementById("programImg").src = newVal.program;
 		});
 
-		nodecg.sendMessage('obsRequest', {
-			request: 'GetPreviewScene',
-		}, (error, result) => {
-			previewScene = result.name;
-		});
-
-		nodecg.listenFor('obsEvent', (value, ack) => {
-			if (value.updateType === 'PreviewSceneChanged')
-				previewScene = value.sceneName;
-			else if (value.updateType === 'TransitionBegin') {
-				document.getElementById("transition").setAttribute("disabled", "true");
-				nodecg.sendMessage('obsRequest', {
-					request: 'GetRecordingStatus',
-				}, (error, result) => {
-					if (value.toScene === 'Intermission' && autoRecord && !emergencyTransitionStatus && result.isRecording) {
-						nodecg.sendMessage('obsRequest', {
-							request: 'StopRecording',
-						});
-					}
-				});
-			}
-			else if (value.updateType === 'TransitionEnd') {
-				document.getElementById("transition").removeAttribute("disabled");
-				if (value.toScene !== 'Intermission') {
-					document.getElementById("emergency").removeAttribute("disabled");
-					nodecg.sendMessage('obsRequest', {
-						request: 'GetRecordingStatus',
-					}, (error, result) => {
-						if (autoRecord && !emergencyTransitionStatus && !result.isRecording) {
-							nodecg.sendMessage('obsRequest', {
-								request: 'StartRecording',
-							})
-							emergencyTransitionStatus = false;
-						}
-					})
-				}
-			}
-			else if (value.updateType === 'StreamStarted')
+		streamStatus.on('change', (newVal, oldVal) => {
+			if (newVal.streaming)
 				document.getElementById("streaming").style.color = "limegreen";
-			else if (value.updateType === 'StreamStopped')
+			else
 				document.getElementById("streaming").style.color = "white";
-			else if (value.updateType === 'RecordingStarted')
+			if (newVal.recording)
 				document.getElementById("recording").style.color = "red";
-			else if (value.updateType === 'RecordingStopped')
+			else
 				document.getElementById("recording").style.color = "white";
 		});
 
-		nodecg.sendMessage('obsRequest', {
-			request: 'GetStreamingStatus',
-		}, (error, result) => {
-			if (result.streaming)
-				document.getElementById("streaming").style.color = "limegreen";
-			if (result.recording)
-				document.getElementById("recording").style.color = "red";
-		})
+		emergencyTransition.on('change', (newVal, oldVal) => {
+			if (newVal)
+				document.getElementById("emergency").setAttribute("disabled", "true");
+			else
+				document.getElementById("emergency").removeAttribute("disabled");
+		});
 
-		window.setInterval(function() {
-			takePreviewScreenshot();
-			takeProgramScreenshot();
-		}, nodecg.bundleConfig.obsWebsocket.previewRefresh);
+		nodecg.listenFor('transitionEnd', (value) => {
+			document.getElementById("transition").removeAttribute("disabled");
+		});
 	})
 })
 
-function takePreviewScreenshot() {
-	nodecg.sendMessage('obsRequest', {
-		request: 'TakeSourceScreenshot',
-		args: {
-			sourceName: previewScene,
-			embedPictureFormat: 'png',
-			width: 480,
-			height: 270,
-		}
-	}, (error, result) => {
-		document.getElementById("previewImg").src = result.img;
-	})
+function transitionToProgramButton() {
+	nodecg.sendMessage('transitionToProgram');
+	document.getElementById("transition").setAttribute("disabled", "true");
 }
 
-function takeProgramScreenshot() {
-	nodecg.sendMessage('obsRequest', {
-		request: 'TakeSourceScreenshot',
-		args: {
-			embedPictureFormat: 'png',
-			width: 480,
-			height: 270,
-		}
-	}, (error, result) => {
-		document.getElementById("programImg").src = result.img;
-	})
-}
-
-function transitionToProgram() {
-	nodecg.sendMessage('obsRequest', {
-		request: 'TransitionToProgram',
-	})
-}
-
-function emergencyTransition() {
-	emergencyTransitionStatus = true;
-	nodecg.sendMessage('obsRequest', {
-		request: 'SetPreviewScene',
-		args: {
-			"scene-name": 'Intermission',
-		}
-	})
-	nodecg.sendMessage('obsRequest', {
-		request: 'TransitionToProgram',
-	})
-	document.getElementById("emergency").setAttribute("disabled", "true");
+function emergencyTransitionButton() {
+	emergencyTransition.value = true;
 }
