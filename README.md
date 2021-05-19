@@ -3,7 +3,6 @@
 A  NodeCG bundle to control an instance of OBS. 
 
 [![Release](https://img.shields.io/github/v/release/nicnacnic/obs-control?label=Release)](https://github.com/nicnacnic/speedcontrol-layouts/releases)
-![Downloads](https://img.shields.io/github/downloads/nicnacnic/obs-control/total?label=Downloads)
 ![License](https://img.shields.io/github/license/nicnacnic/obs-control?label=License)
 [![Twitter](https://img.shields.io/twitter/follow/nicnacnic11?style=social)](https://twitter.com/nicnacnic11)
 [![Discord](https://img.shields.io/badge/-Join%20the%20Discord!-brightgreen?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/A34Qpfe)
