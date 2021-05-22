@@ -191,8 +191,9 @@ module.exports = function(nodecg) {
 			if (data.toScene === nodecg.bundleConfig.scenes.intermission && streamStatus.value.recording && autoRecord.value && emergencyTransition.value === false) {
 				obs.send('StopRecording').catch((error) => websocketError(error));
 			}
-			else if (data.toScene !== nodecg.bundleConfig.scenes.intermission && autoRecord.value) {
-				if (!streamStatus.value.recording) { obs.send('StartRecording').catch((error) => websocketError(error)); }
+			else if (data.toScene !== nodecg.bundleConfig.scenes.intermission) {
+				if (!streamStatus.value.recording && autoRecord.value)
+					obs.send('StartRecording').catch((error) => websocketError(error));
 				emergencyTransition.value = false;
 			}
 		});
