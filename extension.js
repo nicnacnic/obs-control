@@ -112,6 +112,7 @@ module.exports = function(nodecg) {
 		obs.on('StreamStopped', (data) => streamStatus.value.streaming = false)
 		obs.on('RecordingStarted', (data) => streamStatus.value.recording = true)
 		obs.on('RecordingStopped', (data) => streamStatus.value.recording = false)
+		obs.on('TransitionBegin', (data) => nodecg.sendMessage('transitionBegin'))
 		obs.on('TransitionEnd', (data) => nodecg.sendMessage('transitionEnd'))
 		obs.on('SourceVolumeChanged', (data) => {
 			for (let i = 0; i < audioSources.value.length; i++) {
@@ -160,7 +161,10 @@ module.exports = function(nodecg) {
 		nodecg.listenFor('setVolume', (value) => obs.send('SetVolume', { source: value.source, volume: value.volume }))
 		nodecg.listenFor('setMute', (value) => obs.send('SetMute', { source: value.source, mute: value.mute }))
 		nodecg.listenFor('setOffset', (value) => obs.send('SetSyncOffset', { source: value.source, offset: value.offset }))
-		nodecg.listenFor('getCrop', (value) => obs.send('GetSceneItemProperties', { "scene-name": currentScene.value.preview, item: value }).then(result => currentCrop.value = result))
+		nodecg.listenFor('getCrop', (value, ack) => obs.send('GetSceneItemProperties', { "scene-name": currentScene.value.preview, item: value }).then(result => {
+			currentCrop.value = result;
+			obs.send('GetSourceSettings', { sourceName: value }).then(sourceSettings => ack(null, sourceSettings.sourceType))}))
+		nodecg.listenFor('refreshBrowser', (value) => obs.send('RefreshBrowserSource', { sourceName: value }))
 
 		// Refresh OBS preview/program screenshot.
 		setInterval(function() {
