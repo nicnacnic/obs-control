@@ -25,8 +25,13 @@ window.addEventListener('load', function() {
 		emergencyTransition.on('change', (newVal, oldVal) => {
 			if (newVal)
 				document.getElementById("emergency").setAttribute("disabled", "true");
-			else
+			else {
 				document.getElementById("emergency").removeAttribute("disabled");
+				}
+		});
+
+		nodecg.listenFor('transitionBegin', (value) => {
+			document.getElementById("transition").setAttribute("disabled", "true");
 		});
 
 		nodecg.listenFor('transitionEnd', (value) => {

@@ -4,7 +4,7 @@ const cropItems = nodecg.Replicant('cropItems');
 const previewProgram = nodecg.Replicant('previewProgram');
 let selectedSource;
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
 
 	NodeCG.waitForReplicants(currentScene, currentCrop, cropItems, previewProgram).then(() => {
 
@@ -19,8 +19,14 @@ window.addEventListener('load', function() {
 				dropdownContent.appendChild(paperItem);
 			}
 			dropdownContent.setAttribute('selected', 0);
-			if (newVal !== '')
-				nodecg.sendMessage('getCrop', newVal[0])
+			if (newVal !== '') {
+				nodecg.sendMessage('getCrop', newVal[0]).then(value => {
+					document.getElementById('refresh').setAttribute('disabled', 'true');
+					if (value === 'browser_source')
+						document.getElementById('refresh').removeAttribute('disabled');
+				})
+				selectedSource = newVal[0];
+			}
 		})
 
 		currentCrop.on('change', (newVal, oldVal) => {
@@ -39,7 +45,12 @@ window.addEventListener('load', function() {
 });
 
 function setSource(source) {
-	nodecg.sendMessage('getCrop', source)
+	selectedSource = source;
+	nodecg.sendMessage('getCrop', source).then(value => {
+		document.getElementById('refresh').setAttribute('disabled', 'true');
+		if (value === 'browser_source')
+			document.getElementById('refresh').removeAttribute('disabled');
+	})
 }
 
 function setCrop() {
@@ -82,4 +93,8 @@ function reset() {
 	properties.scale.x = 1;
 	properties.scale.y = 1;
 	currentCrop.value = properties;
+}
+
+function refresh() {
+	nodecg.sendMessage('refreshBrowser', selectedSource)
 }
