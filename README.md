@@ -39,6 +39,7 @@ Commission work is available! If you don't have any coding experience, or simply
 ## Other Bundles
 - [speedcontrol-layouts](https://github.com/nicnacnic/speedcontrol-layouts) A pack of simple yet easily customizable layouts, works very well with this bundle!
 - [speedcontrol-tweetr](https://github.com/nicnacnic/speedcontrol-tweetr) Control Twitter right from your NodeCG dashboard!
+- [nodecg-dacbot](https://github.com/nicnacnic/nodecg-dacbot) A Discord bot to capture and stream voice channel audio to a specified audio device and show VC users.
 
 ## Contributing
 There is a lot of inefficient code in this bundle. If you can optimize the code, or add new features, submit a pull request! Before you do, please make sure to **test your code**.
