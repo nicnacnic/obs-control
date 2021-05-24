@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="css/scene-crop.css" />
+	<script src="./js/modules.js"></script>
+	<script src="./js/scene-crop.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+	</script>
+</head>
+
+<body>
+	<div id="main">
+		<div id="optionsDiv">
+			<div id="sourceSelect">
+				<paper-dropdown-menu class="scenes" label="Source" vertical-offset="60">
+					<paper-listbox slot="dropdown-content" class="dropdown-content" id="sourceList"
+						onClick="setSource(this.selectedItem.innerHTML)">
+					</paper-listbox>
+				</paper-dropdown-menu>
+				<div id="generalOptions">
+					<paper-button class="button" id="default" onClick="reset()">Reset</paper-button>
+					<paper-button class="button" id="refresh" onClick="refresh()">Refresh</paper-button>
+				</div>
+			</div>
+			<div id="sourceOptions">
+				<div id="crop">
+					<p class="text">Crop</p>
+					<div class="topBottom">
+						<paper-input class="input" label="Top" id="topCrop" type="number" onChange="setCrop()">
+						</paper-input>
+					</div>
+					<div class="left">
+						<paper-input class="input" label="Left" id="leftCrop" type="number" onChange="setCrop()">
+						</paper-input>
+					</div>
+					<div class="right">
+						<paper-input class="input" label="Right" id="rightCrop" type="number" onChange="setCrop()">
+						</paper-input>
+					</div>
+					<div class="topBottom">
+						<paper-input class="input" label="Bottom" id="bottomCrop" type="number" onChange="setCrop()">
+						</paper-input>
+					</div>
+				</div>
+				<div id="positionScale">
+					<p class="text">Position</p>
+					<div class="left">
+						<paper-input class="input" label="X" id="positionX" type="number" onChange="setPosition()">
+						</paper-input>
+					</div>
+					<div class="right">
+						<paper-input class="input" label="Y" id="positionY" type="number" onChange="setPosition()">
+						</paper-input>
+					</div>
+					<p class="text" style="margin-top: 80px;">Scale</p>
+					<div class="left">
+						<paper-input class="input" label="Width" id="scaleWidth" type="number" step="0.001"
+							onChange="setScale()"></paper-input>
+					</div>
+					<div class="right">
+						<paper-input class="input" label="Height" id="scaleHeight" type="number" step="0.001"
+							onChange="setScale()"></paper-input>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="preview">
+			<img id="previewImg" src="./img/obs_browser.png" alt="./img/obs_browser.png" />
+		</div>
+	</div>
+	<custom-style>
+		<style>
+			paper-input.input {
+				width: 100px;
+				--primary-text-color: white;
+				--paper-input-container-color: #FFFFFFB3;
+				--paper-input-container-focus-color: #2196F3;
+				--paper-input-container-underline-focus-border-color: #2196F3;
+			}
+
+			paper-button.button {
+				font-family: Roboto;
+				font-weight: 500;
+				font-size: 14px;
+				letter-spacing: .0892857143em;
+				background-color: #272727;
+				--paper-button-ink-color: #6A6A6A;
+			}
+
+			paper-button.button:hover {
+				background-color: #383838;
+			}
+
+			paper-button.button[disabled] {
+				background-color: #485264;
+			}
+
+			paper-dropdown-menu.scenes {
+				width: 60%;
+				margin-top: -500px;
+				--paper-input-container-color: #FFFFFFB3;
+				--paper-input-container-focus-color: #2196F3;
+				--paper-input-container-input-color: #FFFFFF;
+				--paper-input-container-underline-focus-border-color: #2196F3;
+			}
+
+			paper-listbox.dropdown-content {
+				width: 250px;
+				height: 400px;
+			}
+		</style>
+	</custom-style>
+</body>
+
+</html>
