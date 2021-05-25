@@ -13,7 +13,7 @@ const speedcontrolBundle = 'nodecg-speedcontrol';
 let connectionError = false;
 let twitchQuality;
 
-module.exports = function(nodecg) {
+module.exports = function (nodecg) {
 	const obs = new OBSWebSocket();
 
 	// Initialize replicants.
@@ -53,11 +53,17 @@ module.exports = function(nodecg) {
 		// Load data from nodecg-speedcontrol (if active).
 		if (nodecg.bundleConfig.general.speedcontrolSetRunner || nodecg.bundleConfig.general.speedcontrolSetLayout) {
 			runDataActiveRun = nodecg.Replicant('runDataActiveRun', speedcontrolBundle)
-			setTimeout(function() {
+			setTimeout(function () {
 				runDataActiveRun.on('change', (newVal, oldVal) => {
-					let runnersArray = ['', '', '', ''];
-					let runnersArrayIndex = 0;
-					try {
+					if (nodecg.bundleConfig.general.speedcontrolSetLayout) {
+						try {
+							if (runDataActiveRun.value.customData !== undefined && runDataActiveRun.value.customData.layout !== undefined)
+								currentScene.value.preview = runDataActiveRun.value.customData.layout;
+						} catch { }
+					}
+					if (nodecg.bundleConfig.general.speedcontrolSetRunner && newVal.teams.length !== undefined) {
+						let runnersArray = ['', '', '', ''];
+						let runnersArrayIndex = 0;
 						for (let i = 0; i < newVal.teams.length; i++) {
 							for (let j = 0; j < newVal.teams[i].players.length; j++) {
 								runnersArray[runnersArrayIndex] = newVal.teams[i].players[j].social.twitch;
@@ -65,7 +71,7 @@ module.exports = function(nodecg) {
 							}
 						}
 						activeRunners.value = runnersArray;
-					} catch { }
+					}
 				});
 			}, 3000)
 		}
@@ -151,7 +157,7 @@ module.exports = function(nodecg) {
 		nodecg.listenFor('refreshSource', (value) => {
 			const oldVal = activeRunners.value;
 			activeRunners.value = ['', '', '', ''];
-			setTimeout(function() { activeRunners.value = oldVal; }, 100)
+			setTimeout(function () { activeRunners.value = oldVal; }, 100)
 		})
 		nodecg.listenFor('reauthenticate', (value) => {
 			obs.disconnect();
@@ -163,11 +169,12 @@ module.exports = function(nodecg) {
 		nodecg.listenFor('setOffset', (value) => obs.send('SetSyncOffset', { source: value.source, offset: value.offset }))
 		nodecg.listenFor('getCrop', (value, ack) => obs.send('GetSceneItemProperties', { "scene-name": currentScene.value.preview, item: value }).then(result => {
 			currentCrop.value = result;
-			obs.send('GetSourceSettings', { sourceName: value }).then(sourceSettings => ack(null, sourceSettings.sourceType))}))
+			obs.send('GetSourceSettings', { sourceName: value }).then(sourceSettings => ack(null, sourceSettings.sourceType))
+		}))
 		nodecg.listenFor('refreshBrowser', (value) => obs.send('RefreshBrowserSource', { sourceName: value }))
 
 		// Refresh OBS preview/program screenshot.
-		setInterval(function() {
+		setInterval(function () {
 			obs.send('TakeSourceScreenshot', {
 				sourceName: currentScene.value.preview,
 				embedPictureFormat: 'png',
@@ -205,7 +212,7 @@ module.exports = function(nodecg) {
 		// Emergency Transition logic.
 		emergencyTransition.on('change', (newVal, oldVal) => {
 			if (newVal) {
-				obs.send('SetPreviewScene', { "scene-name": nodecg.bundleConfig.scenes.intermission }).then(function() {
+				obs.send('SetPreviewScene', { "scene-name": nodecg.bundleConfig.scenes.intermission }).then(function () {
 					obs.send('TransitionToProgram').catch((error) => websocketError(error));
 					nodecg.log.warn('Emergency transition activated on ' + Date() + '.')
 				}).catch((error) => websocketError(error));
@@ -213,41 +220,30 @@ module.exports = function(nodecg) {
 		});
 
 		// Update players.
-		setTimeout(function() {
-			activeRunners.on('change', (newVal, oldVal) => {
-				if (nodecg.bundleConfig.general.speedcontrolSetLayout) {
-					try {
-						if (runDataActiveRun.value.customData !== undefined && runDataActiveRun.value.customData.layout !== undefined) {
-							obs.send('SetPreviewScene', { "scene-name": runDataActiveRun.value.customData.layout }).catch((error) => nodecg.log.warn('Scene ' + runDataActiveRun.value.customData.layout + ' does not exist!'));
+		activeRunners.on('change', (newVal, oldVal) => {
+			for (let i = 0; i < 4; i++) {
+				if (nodecg.bundleConfig.general.useRTMP) {
+					if (newVal[i] === null || newVal[i] === undefined)
+						newVal[i] = '';
+					obs.send('SetSourceSettings', {
+						sourceName: nodecg.bundleConfig.sources.player[i],
+						sourceSettings: {
+							input: nodecg.bundleConfig.general.RTMPServerURL + newVal[i],
 						}
-					} catch { }
+					}).catch((error) => websocketError(error));
 				}
-				if (nodecg.bundleConfig.general.speedcontrolSetRunner) {
-					for (let i = 0; i < 4; i++) {
-						if (nodecg.bundleConfig.general.useRTMP) {
-							if (newVal[i] === null || newVal[i] === undefined)
-								newVal[i] = '';
-							obs.send('SetSourceSettings', {
-								sourceName: nodecg.bundleConfig.sources.player[i],
-								sourceSettings: {
-									input: nodecg.bundleConfig.general.RTMPServerURL + newVal[i],
-								}
-							}).catch((error) => websocketError(error));
+				else {
+					if (newVal[i] === null || newVal[i] === undefined)
+						newVal[i] = '';
+					obs.send('SetSourceSettings', {
+						sourceName: nodecg.bundleConfig.sources.player[i],
+						sourceSettings: {
+							url: 'https://player.twitch.tv/?parent=BLAH&volume=1&!muted&channel=' + newVal[i] + twitchQuality,
 						}
-						else {
-							if (newVal[i] === null || newVal[i] === undefined)
-								newVal[i] = '';
-							obs.send('SetSourceSettings', {
-								sourceName: nodecg.bundleConfig.sources.player[i],
-								sourceSettings: {
-									url: 'https://player.twitch.tv/?parent=BLAH&volume=1&!muted&channel=' + newVal[i] + twitchQuality,
-								}
-							}).catch((error) => websocketError(error));
-						}
-					}
+					}).catch((error) => websocketError(error));
 				}
-			});
-		}, 1000)
+			}
+		});
 
 		// Update quality.
 		quality.on('change', (newVal, oldVal) => {
@@ -288,14 +284,14 @@ module.exports = function(nodecg) {
 			playerSources.sort((a, b) => a.localeCompare(b))
 			mediaSources.sort((a, b) => a.localeCompare(b))
 
-			playerSources.forEach(function(element) {
+			playerSources.forEach(function (element) {
 				getPlayerVolume = obs.send('GetVolume', { source: element }).then(result => {
 					getSyncOffset = obs.send('GetSyncOffset', { source: element }).then(data => {
 						sortedArray.push({ name: element, volume: result.volume, muted: result.muted, offset: data.offset, changed: false })
 					}).catch((error) => websocketError(error));
 				}).catch((error) => websocketError(error));
 			});
-			mediaSources.forEach(function(element) {
+			mediaSources.forEach(function (element) {
 				getPlayerVolume = obs.send('GetVolume', { source: element }).then(result => {
 					getSyncOffset = obs.send('GetSyncOffset', { source: element }).then(data => {
 						sortedArray.push({ name: element, volume: result.volume, muted: result.muted, offset: data.offset, changed: false })
@@ -346,7 +342,7 @@ module.exports = function(nodecg) {
 			if (!connectionError) {
 				connectionError = true;
 				nodecg.log.error('Disconnected from OBS. Retrying every 10s, please check your connection.');
-				let obsReconnect = setInterval(function() {
+				let obsReconnect = setInterval(function () {
 					obs.connect({ address: nodecg.bundleConfig.obsWebsocket.address, password: nodecg.bundleConfig.obsWebsocket.password }).then(() => {
 						nodecg.log.info('Reconnected to OBS instance!');
 						connectionError = false;
