@@ -4,7 +4,7 @@ const quality = nodecg.Replicant('quality');
 const sceneList = nodecg.Replicant('sceneList');
 const currentScene = nodecg.Replicant('currentScene');
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
 
 	// Load replicants.
 	NodeCG.waitForReplicants(activeRunners, quality, sceneList, currentScene).then(() => {
@@ -37,6 +37,8 @@ window.addEventListener('load', function() {
 		// Update active runners.
 		activeRunners.on('change', (newVal, oldVal) => {
 			for (let i = 0; i < 4; i++) {
+				if (newVal[i] === null || newVal[i] === undefined)
+					newVal[i] = '';
 				document.getElementById('input' + i).setAttribute('value', newVal[i]);
 			}
 		});
@@ -62,7 +64,7 @@ function changeScene(element) {
 }
 
 function updateSource() {
-	activeRunners.value = [document.getElementById('input' + 0).value, document.getElementById('input' + 1).value, document.getElementById('input' + 2).value, document.getElementById('input' + 3).value]
+	activeRunners.value = [document.getElementById('input0').value, document.getElementById('input1').value, document.getElementById('input2').value, document.getElementById('input3').value]
 }
 
 function updateQuality(element) {
