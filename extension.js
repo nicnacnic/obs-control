@@ -25,7 +25,7 @@ module.exports = function (nodecg) {
 	const currentCrop = nodecg.Replicant('currentCrop');
 	const cropItems = nodecg.Replicant('cropItems');
 	const audioSources = nodecg.Replicant('audioSources');
-	const previewProgram = nodecg.Replicant('previewProgram');
+	const previewProgram = nodecg.Replicant('previewProgram', { persistent: false });
 	const emergencyTransition = nodecg.Replicant('emergencyTransition', false);
 	const autoRecord = nodecg.Replicant('autoRecord', { defaultValue: false });
 	const stats = nodecg.Replicant('stats', {
@@ -55,22 +55,24 @@ module.exports = function (nodecg) {
 			runDataActiveRun = nodecg.Replicant('runDataActiveRun', speedcontrolBundle)
 			setTimeout(function () {
 				runDataActiveRun.on('change', (newVal, oldVal) => {
-					if (nodecg.bundleConfig.general.speedcontrolSetLayout) {
-						try {
-							if (runDataActiveRun.value.customData !== undefined && runDataActiveRun.value.customData.layout !== undefined)
-								currentScene.value.preview = runDataActiveRun.value.customData.layout;
-						} catch { }
-					}
-					if (nodecg.bundleConfig.general.speedcontrolSetRunner && newVal.teams.length !== undefined) {
-						let runnersArray = ['', '', '', ''];
-						let runnersArrayIndex = 0;
-						for (let i = 0; i < newVal.teams.length; i++) {
-							for (let j = 0; j < newVal.teams[i].players.length; j++) {
-								runnersArray[runnersArrayIndex] = newVal.teams[i].players[j].social.twitch;
-								runnersArrayIndex++;
-							}
+					if (oldVal !== undefined) {
+						if (nodecg.bundleConfig.general.speedcontrolSetLayout) {
+							try {
+								if (runDataActiveRun.value.customData !== undefined && runDataActiveRun.value.customData.layout !== undefined)
+									currentScene.value.preview = runDataActiveRun.value.customData.layout;
+							} catch { }
 						}
-						activeRunners.value = runnersArray;
+						if (nodecg.bundleConfig.general.speedcontrolSetRunner && newVal.teams.length !== undefined) {
+							let runnersArray = ['', '', '', ''];
+							let runnersArrayIndex = 0;
+							for (let i = 0; i < newVal.teams.length; i++) {
+								for (let j = 0; j < newVal.teams[i].players.length; j++) {
+									runnersArray[runnersArrayIndex] = newVal.teams[i].players[j].social.twitch;
+									runnersArrayIndex++;
+								}
+							}
+							activeRunners.value = runnersArray;
+						}
 					}
 				});
 			}, 3000)
@@ -83,9 +85,9 @@ module.exports = function (nodecg) {
 			currentScene.value.program = result.currentScene;
 		}).catch((error) => websocketError(error));
 		obs.send('GetPreviewScene').then(result => {
+			currentScene.value.preview = result.name;
 			const blockedTypes = ['wasapi_input_capture', 'wasapi_output_capture', 'pulse_input_capture', 'pulse_output_capture', 'group'];
 			let sourceArray = [];
-			currentScene.value = { preview: result.name };
 			for (let i = 0; i < result.sources.length; i++) {
 				if (!blockedTypes.includes(result.sources[i].type))
 					sourceArray.push(result.sources[i].name)
@@ -94,6 +96,7 @@ module.exports = function (nodecg) {
 				cropItems.value = sourceArray;
 			else
 				cropItems.value = '';
+
 		}).catch((error) => websocketError(error));
 		getAudioSources();
 
@@ -193,7 +196,7 @@ module.exports = function (nodecg) {
 
 		// Change preview scene.
 		currentScene.on('change', (newVal, oldVal) => {
-			if (newVal !== undefined)
+			if (newVal !== undefined && oldVal !== undefined)
 				obs.send('SetPreviewScene', { "scene-name": newVal.preview }).catch((error) => websocketError(error));
 		});
 
@@ -221,26 +224,28 @@ module.exports = function (nodecg) {
 
 		// Update players.
 		activeRunners.on('change', (newVal, oldVal) => {
-			for (let i = 0; i < 4; i++) {
-				if (nodecg.bundleConfig.general.useRTMP) {
-					if (newVal[i] === null || newVal[i] === undefined)
-						newVal[i] = '';
-					obs.send('SetSourceSettings', {
-						sourceName: nodecg.bundleConfig.sources.player[i],
-						sourceSettings: {
-							input: nodecg.bundleConfig.general.RTMPServerURL + newVal[i],
-						}
-					}).catch((error) => websocketError(error));
-				}
-				else {
-					if (newVal[i] === null || newVal[i] === undefined)
-						newVal[i] = '';
-					obs.send('SetSourceSettings', {
-						sourceName: nodecg.bundleConfig.sources.player[i],
-						sourceSettings: {
-							url: 'https://player.twitch.tv/?parent=BLAH&volume=1&!muted&channel=' + newVal[i] + twitchQuality,
-						}
-					}).catch((error) => websocketError(error));
+			if (oldVal !== undefined) {
+				for (let i = 0; i < 4; i++) {
+					if (nodecg.bundleConfig.general.useRTMP) {
+						if (newVal[i] === null || newVal[i] === undefined)
+							newVal[i] = '';
+						obs.send('SetSourceSettings', {
+							sourceName: nodecg.bundleConfig.sources.player[i],
+							sourceSettings: {
+								input: nodecg.bundleConfig.general.RTMPServerURL + newVal[i],
+							}
+						}).catch((error) => websocketError(error));
+					}
+					else {
+						if (newVal[i] === null || newVal[i] === undefined)
+							newVal[i] = '';
+						obs.send('SetSourceSettings', {
+							sourceName: nodecg.bundleConfig.sources.player[i],
+							sourceSettings: {
+								url: 'https://player.twitch.tv/?parent=BLAH&volume=1&!muted&channel=' + newVal[i] + twitchQuality,
+							}
+						}).catch((error) => websocketError(error));
+					}
 				}
 			}
 		});
