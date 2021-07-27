@@ -21,7 +21,7 @@ module.exports = function (nodecg) {
 	const quality = nodecg.Replicant('quality', { defaultValue: 'Auto' })
 	const streamStatus = nodecg.Replicant('streamStatus');
 	const sceneList = nodecg.Replicant('sceneList');
-	const currentScene = nodecg.Replicant('currentScene');
+	const currentScene = nodecg.Replicant('currentScene', { defaultValue: { preview: '', program: ''}});
 	const currentCrop = nodecg.Replicant('currentCrop');
 	const cropItems = nodecg.Replicant('cropItems');
 	const audioSources = nodecg.Replicant('audioSources');
@@ -170,10 +170,12 @@ module.exports = function (nodecg) {
 		nodecg.listenFor('setVolume', (value) => obs.send('SetVolume', { source: value.source, volume: value.volume }))
 		nodecg.listenFor('setMute', (value) => obs.send('SetMute', { source: value.source, mute: value.mute }))
 		nodecg.listenFor('setOffset', (value) => obs.send('SetSyncOffset', { source: value.source, offset: value.offset }))
-		nodecg.listenFor('getCrop', (value, ack) => obs.send('GetSceneItemProperties', { "scene-name": currentScene.value.preview, item: value }).then(result => {
-			currentCrop.value = result;
-			obs.send('GetSourceSettings', { sourceName: value }).then(sourceSettings => ack(null, sourceSettings.sourceType))
-		}))
+		nodecg.listenFor('getCrop', (value, ack) => {
+			obs.send('GetSceneItemProperties', { "scene-name": currentScene.value.preview, item: value }).then(result => {
+				currentCrop.value = result;
+				obs.send('GetSourceSettings', { sourceName: value }).then(sourceSettings => ack(null, sourceSettings.sourceType))
+			})
+		})
 		nodecg.listenFor('refreshBrowser', (value) => obs.send('RefreshBrowserSource', { sourceName: value }))
 
 		// Refresh OBS preview/program screenshot.
@@ -225,7 +227,7 @@ module.exports = function (nodecg) {
 		// Update players.
 		activeRunners.on('change', (newVal, oldVal) => {
 			if (oldVal !== undefined) {
-				for (let i = 0; i < 4; i++) {
+				for (let i = 0; i < nodecg.bundleConfig.sources.length; i++) {
 					if (nodecg.bundleConfig.general.useRTMP) {
 						if (newVal[i] === null || newVal[i] === undefined)
 							newVal[i] = '';
@@ -308,9 +310,9 @@ module.exports = function (nodecg) {
 			audioSources.value = sortedArray;
 		}
 
-		// Set crops.
+		// Set crops.		
 		currentCrop.on('change', (newVal, oldVal) => {
-			if (newVal !== undefined) {
+			if (newVal !== undefined && oldVal !== undefined) {
 				obs.send('SetSceneItemProperties', {
 					"scene-name": currentScene.value.preview,
 					item: newVal.name,
@@ -331,6 +333,7 @@ module.exports = function (nodecg) {
 				}).catch((error) => websocketError(error));
 			}
 		});
+
 		// Catch errors.
 		obs.on('error', err => {
 			nodecg.log.warn(err);
@@ -359,4 +362,4 @@ module.exports = function (nodecg) {
 		else
 			nodecg.log.error(JSON.stringify(error, null, 2));
 	}
-};
+}
