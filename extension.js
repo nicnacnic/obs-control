@@ -227,7 +227,8 @@ module.exports = function (nodecg) {
 		// Update players.
 		activeRunners.on('change', (newVal, oldVal) => {
 			if (oldVal !== undefined) {
-				for (let i = 0; i < nodecg.bundleConfig.sources.length; i++) {
+				console.log(nodecg.bundleConfig.sources.player.length)
+				for (let i = 0; i < nodecg.bundleConfig.sources.player.length; i++) {
 					if (nodecg.bundleConfig.general.useRTMP) {
 						if (newVal[i] === null || newVal[i] === undefined)
 							newVal[i] = '';
@@ -241,6 +242,7 @@ module.exports = function (nodecg) {
 					else {
 						if (newVal[i] === null || newVal[i] === undefined)
 							newVal[i] = '';
+							console.log(newVal[i])
 						obs.send('SetSourceSettings', {
 							sourceName: nodecg.bundleConfig.sources.player[i],
 							sourceSettings: {
