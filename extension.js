@@ -153,7 +153,19 @@ module.exports = function (nodecg) {
 		obs.on('SourceCreated', (data) => getAudioSources())
 		obs.on('SourceDestroyed', (data) => getAudioSources())
 
-		// Listening for requests from clients.
+		// Listening for external requests from other bundles
+		nodecg.listenFor('obsRequest', (value, ack) => {
+			if (!('request-type' in value)) {
+				ack(new Error('No request type specified'));
+				return;
+			}
+
+			obs.send(value['request-type'], value)
+				.then((result) => ack(null, result))
+				.catch((error) => ack(error));
+		});
+
+		// Listening for internal requests from our dashboard elements
 		nodecg.listenFor('toggleStream', (value) => obs.send('StartStopStreaming'))
 		nodecg.listenFor('toggleRecording', (value) => obs.send('StartStopRecording'))
 		nodecg.listenFor('transitionToProgram', (value) => obs.send('TransitionToProgram'))
