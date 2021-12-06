@@ -165,6 +165,11 @@ module.exports = function (nodecg) {
 				.catch((error) => ack(error));
 		});
 
+		// Forward all events from OBS
+		for (let eventType of getEventTypes()) {
+			obs.on(eventType, (data) => nodecg.sendMessage('obs-event-' + eventType, data));
+		}
+
 		// Listening for internal requests from our dashboard elements
 		nodecg.listenFor('toggleStream', (value) => obs.send('StartStopStreaming'))
 		nodecg.listenFor('toggleRecording', (value) => obs.send('StartStopRecording'))
@@ -375,5 +380,73 @@ module.exports = function (nodecg) {
 		}
 		else
 			nodecg.log.error(JSON.stringify(error, null, 2));
+	}
+
+	function getEventTypes() {
+		return [
+			'SwitchScenes',
+			'ScenesChanged',
+			'SceneCollectionChanged',
+			'SceneCollectionListChanged',
+			'SwitchTransition',
+			'TransitionListChanged',
+			'TransitionDurationChanged',
+			'TransitionBegin',
+			'TransitionEnd',
+			'TransitionVideoEnd',
+			'ProfileChanged',
+			'ProfileListChanged',
+			'StreamStarting',
+			'StreamStarted',
+			'StreamStopping',
+			'StreamStopped',
+			'StreamStatus',
+			'RecordingStarting',
+			'RecordingStarted',
+			'RecordingStopping',
+			'RecordingStopped',
+			'RecordingPaused',
+			'RecordingResumed',
+			'VirtualCamStarted',
+			'VirtualCamStopped',
+			'ReplayStarting',
+			'ReplayStarted',
+			'ReplayStopping',
+			'ReplayStopped',
+			'Exiting',
+			'Heartbeat',
+			'BroadcastCustomMessage',
+			'SourceCreated',
+			'SourceDestroyed',
+			'SourceVolumeChanged',
+			'SourceMuteStateChanged',
+			'SourceAudioDeactivated',
+			'SourceAudioActivated',
+			'SourceAudioSyncOffsetChanged',
+			'SourceAudioMixersChanged',
+			'SourceRenamed',
+			'SourceFilterAdded',
+			'SourceFilterRemoved',
+			'SourceFilterVisibilityChanged',
+			'SourceFiltersReordered',
+			'MediaPlaying',
+			'MediaPaused',
+			'MediaRestarted',
+			'MediaStopped',
+			'MediaNext',
+			'MediaPrevious',
+			'MediaStarted',
+			'MediaEnded',
+			'SourceOrderChanged',
+			'SceneItemAdded',
+			'SceneItemRemoved',
+			'SceneItemVisibilityChanged',
+			'SceneItemLockChanged',
+			'SceneItemTransformChanged',
+			'SceneItemSelected',
+			'SceneItemDeselected',
+			'PreviewSceneChanged',
+			'StudioModeSwitched'
+		]
 	}
 }
