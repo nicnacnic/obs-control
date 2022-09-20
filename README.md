@@ -26,7 +26,7 @@ If you would like to use the [NodeCG Speedcontrol](https://github.com/speedcontr
 ## Installation
 To install, navigate to your root NodeCG directory and run the following command.
 
-```nodecg install nicnacnic/obs-control```
+```nodecg install twitchcologne/obs-control```
 
 After the installation completes, create a config file by running `nodecg defaultconfig obs-control`. For more information please view the [setup guide](https://github.com/nicnacnic/obs-control/wiki/Setup-Guide).
 
