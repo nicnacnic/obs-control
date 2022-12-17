@@ -7,6 +7,9 @@ A  NodeCG bundle to control an instance of OBS.
 [![Twitter](https://img.shields.io/twitter/follow/nicnacnic11?style=social)](https://twitter.com/nicnacnic11)
 [![Discord](https://img.shields.io/badge/-Join%20the%20Discord!-brightgreen?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/A34Qpfe)
 
+## This bundle is depreciated!
+This bundle is no longer maintained. If you're looking for something with similar (yet better) functionality, take a look at [nodecg-marathon-control](https://github.com/nicnacnic/nodecg-marathon-control) which is more up-to-date and actually somewhat maintained. At this point, it's not guaranteed that everything works properly in this bundle, so proceed with caution! No support is provided.
+
 ## About
 *This is a bundle for [NodeCG](https://github.com/nodecg/nodecg); if you do not understand what that is, we advise you read their website first for more information.*
 
